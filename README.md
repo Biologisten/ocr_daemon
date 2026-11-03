@@ -58,6 +58,34 @@ The Makefile links `native/lib/libonnxruntime.so.1.31.1` with
 vendored file is absent, so a checkout without `native/lib/` still builds.
 `ldd native/cpp-ocr-daemon | grep onnx` shows which one a binary resolved.
 
+## Install as a daemon
+
+`make -C native install` copies a self-contained tree to
+`$(PREFIX)` (default `~/.local/lib/ocr-daemon`):
+
+```
+ocr-daemon                     the binary
+lib/libonnxruntime.so.1.31.1   vendored runtime
+lib/libonnxruntime.so.1        symlink the binary resolves
+models/*.onnx                  det, rec and classifier
+```
+
+The binary's `$ORIGIN/lib` RUNPATH makes the vendored runtime win over the
+system 1.29 wherever the tree is moved, so the service needs no
+`LD_LIBRARY_PATH`. A user unit is then:
+
+```ini
+[Service]
+ExecStart=%h/.local/lib/ocr-daemon/ocr-daemon
+Environment=OCR_MODEL_DIR=%h/.local/lib/ocr-daemon/models
+Environment=OCR_PORT=9722
+Restart=on-failure
+```
+
+Static linkage is not an option here: upstream ships only the shared
+`libonnxruntime.so` (no `.a`), and static ORT would mean building 1.31.1 from
+source. OpenCV's libraries are shared on this distribution too.
+
 ## Benchmark
 
 ```sh

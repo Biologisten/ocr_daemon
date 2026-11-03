@@ -53,5 +53,16 @@ cpp-ocr-daemon: cpp_daemon.cpp libocr_core.a
 smoke: smoke.cpp libocr_core.a
 	$(CXX) $(CXXFLAGS) $< -L. -locr_core $(ORT_CXX) $(LDLIBS) -o $@
 
+# Self-contained tree: the binary resolves $ORIGIN/lib, so the vendored runtime
+# sits beside it and the system 1.29 is never consulted.
+PREFIX ?= $(HOME)/.local/lib/ocr-daemon
+
+install: cpp-ocr-daemon
+	mkdir -p $(PREFIX)/lib $(PREFIX)/models
+	install -m755 cpp-ocr-daemon $(PREFIX)/ocr-daemon
+	install -m755 $(ORT_LIB) $(PREFIX)/lib/
+	ln -sf libonnxruntime.so.$(ORT_VERSION) $(PREFIX)/lib/libonnxruntime.so.1
+	install -m644 ../models/*.onnx $(PREFIX)/models/
+
 clean:
 	rm -f *.o *.a c-ocr-daemon cpp-ocr-daemon smoke
