@@ -1,0 +1,5 @@
+*.o
+*.a
+c-ocr-daemon
+cpp-ocr-daemon
+smoke

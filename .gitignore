@@ -1,0 +1,30 @@
+# Native build products (see native/Makefile)
+*.o
+*.a
+*.d
+native/c-ocr-daemon
+native/cpp-ocr-daemon
+native/smoke
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Temporary files, logs and profiles
+*.log
+*.tmp
+core
+core.*
+perf.data
+perf.data.*

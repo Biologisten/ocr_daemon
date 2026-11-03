@@ -1,0 +1,28 @@
+{
+  "corpus": "corpus/manifest.json",
+  "port": 9723,
+  "trials": 5,
+  "repetitions": 1,
+  "warmups": 1,
+  "budget_ms": 1000,
+  "candidates": [
+    {
+      "name": "c",
+      "command": [
+        "./native/c-ocr-daemon"
+      ],
+      "env": {
+        "OCR_MODEL_DIR": "models"
+      }
+    },
+    {
+      "name": "cpp",
+      "command": [
+        "./native/cpp-ocr-daemon"
+      ],
+      "env": {
+        "OCR_MODEL_DIR": "models"
+      }
+    }
+  ]
+}

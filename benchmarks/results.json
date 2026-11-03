@@ -1,0 +1,1800 @@
+{
+  "machine": {
+    "platform": "Linux-7.3.1-1-cachyos-x86_64-with-glibc2.44",
+    "python": "3.14.8 (main, Oct 13 2026, 10:33:10) [GCC 16.2.1 20260810]",
+    "cpu_count": 12
+  },
+  "config": {
+    "corpus": "corpus/manifest.json",
+    "port": 9723,
+    "trials": 5,
+    "repetitions": 1,
+    "warmups": 1,
+    "budget_ms": 1000,
+    "candidates": [
+      {
+        "name": "c",
+        "command": [
+          "./native/c-ocr-daemon"
+        ],
+        "env": {
+          "OCR_MODEL_DIR": "models"
+        }
+      },
+      {
+        "name": "cpp",
+        "command": [
+          "./native/cpp-ocr-daemon"
+        ],
+        "env": {
+          "OCR_MODEL_DIR": "models"
+        }
+      }
+    ]
+  },
+  "results": [
+    {
+      "name": "c",
+      "startup_ms": {
+        "median": 458.5408639977686,
+        "samples": [
+          436.9594260060694,
+          458.5408639977686,
+          466.66694001760334,
+          435.6287629925646,
+          479.61904300609604
+        ]
+      },
+      "probe_ms": {
+        "median": 316.983696,
+        "samples": [
+          314.608972,
+          316.983696,
+          325.020882,
+          314.301674,
+          338.089544
+        ]
+      },
+      "reject_ms": {
+        "median": 0.155229,
+        "samples": [
+          0.14738,
+          0.159369,
+          0.13956,
+          0.155229,
+          0.16353
+        ]
+      },
+      "rss_kib": [
+        226912,
+        322588,
+        321880,
+        243188,
+        243276
+      ],
+      "cpu_ms_per_request": 2286.0,
+      "requests": 100,
+      "latency_ms": {
+        "median": 360.91973099999996,
+        "median_ci": [
+          253.41234599999999,
+          424.2865205
+        ],
+        "mean": 352.68024470999995,
+        "p90": 529.1543798,
+        "p95": 553.2255480499999,
+        "p99": 580.6458132700001,
+        "min": 150.605852,
+        "max": 595.522768
+      },
+      "median_by_trial": {
+        "0": 375.5133855,
+        "1": 363.1406535,
+        "2": 359.831858,
+        "3": 360.06538850000004,
+        "4": 352.828361
+      },
+      "median_by_image": {
+        "01.png": 511.795867,
+        "02.png": 284.603241,
+        "03.png": 393.763817,
+        "04.png": 168.423509,
+        "05.png": 343.664506,
+        "06.png": 445.382122,
+        "07.png": 546.197994,
+        "08.png": 230.216255,
+        "09.png": 499.477471,
+        "10.png": 378.042254,
+        "11.png": 165.781427,
+        "12.png": 386.106311,
+        "13.png": 212.262339,
+        "14.png": 343.621937,
+        "15.png": 276.608437,
+        "16.png": 403.190919,
+        "17.png": 165.335727,
+        "18.png": 507.34635,
+        "19.png": 577.140931,
+        "20.png": 212.235027
+      },
+      "worst_image": {
+        "name": "19.png",
+        "median_ms": 577.140931
+      },
+      "heavy_images": [
+        "19.png",
+        "07.png",
+        "01.png",
+        "18.png"
+      ],
+      "heavy_median_ms": 528.9969305,
+      "budget_ms": 1000.0,
+      "images_over_budget": [],
+      "exact_match_rate": 0.3,
+      "character_error_rate": 0.013447031813709412,
+      "mismatches": {
+        "01.png": {
+          "expected": "\u30e2\u30a8\u30c1\u30e3\u30c3\u30ab\u30d5\u30a1\u30c3\u30af (\u30e2\u30a8\u30c1\u30e3\u30c3\u30ab\u30d5\u30a1\u30a4\u30a2 Trixy\nNextgen Earrape 200bpm Zenless Zone Zero Tool)",
+          "actual": "\u30e2\u30a8\u30c1\u30e3\u30c3\u30ab\u30d5\u30a1\u30c3\u30af(\u30e2\u30a8\u30c1\u30e3\u30c3\u30ab\u30d5\u30a1\u30a4\u30a2Trixy\nNextgen Earrape 200bpm Zenless Zone Zero Tool)"
+        },
+        "03.png": {
+          "expected": "Voorpagina Laatste nieuws Video's Binnenland Buitenland Regionaal nieuws",
+          "actual": "Voorpagina\nLaatste nieuws\nVideo's\nBinnenland\nBuitenland\nRegionaal nieuws"
+        },
+        "05.png": {
+          "expected": "Goedemorgen, waarmee\nkunnen wij u helpen?",
+          "actual": "Goedemorgen, v\nwaarmee\nkunnen wij u helpen?"
+        },
+        "06.png": {
+          "expected": "\u4e2d\u570b\u57281945\u5e74\u6297\u65e5\u6230\u722d\u52dd\u5229\u5f8c\uff0c\u4e2d\u570b\u5171\u7522\u9ee8\u8207\u4e2d\u570b\u570b\u6c11\u9ee8\u7684\u653f\u6cbb\u53ca\u8ecd\u4e8b\u6469\u64e6\u9010\u6f38\u64f4\n\u5927\uff0c\u6700\u7d42\u6f14\u8b8a\u6210\u96d9\u65b9\u7684\u7b2c\u4e8c\u6b21\u5167\u6230\u3002\u4e4b\u5f8c\uff0c\u6bdb\u6cfd\u4e1c\u9886\u5bfc\u7684\u4e2d\u570b\u5171\u7522\u9ee8\u548c\u5176\u4e0b\u5c5e\u7684\u4e2d\u56fd\n\u4eba\u6c11\u89e3\u653e\u519b\uff0c\u9010\u6b65\u64ca\u6557\u8523\u4e2d\u6b63\u9818\u5c0e\u7684\u570b\u6c11\u9ee8\u653f\u5e9c\u53ca\u5176\u8ecd\u968a[\u8a3b 8]\u30021949\u5e7410\u67081\u65e5\uff0c\n\u4e2d\u56fd\u5171\u4ea7\u515a\u5728\u63a7\u5236\u4e2d\u570b\u5927\u90e8\u5206\u9818\u571f\u5f8c\uff0c\u5728\u5317\u4eac\u5ba3\u544a\u6210\u7acb\u4e2d\u534e\u4eba\u6c11\u5171\u548c\u56fd\u4e2d\u592e\u4eba\u6c11\u653f\n\u5e9c\uff1b\u4e2d\u83ef\u6c11\u570b\u653f\u5e9c\u5247\u65bc1949\u5e74\u5e95\u9077\u5f80\u81fa\u7063\uff0c\u6d77\u5ce1\u4e24\u5cb8\u9677\u5165\u957f\u671f\u653f\u6cbb\u5bf9\u7acb\uff0c\u662f\u73b0\u4eca\u53f0\n\u6e7e\u95ee\u9898\u5f62\u6210\u7684\u5386\u53f2\u80cc\u666f\u3002\u5efa\u570b\u521d\u671f\uff0c\u4e2d\u83ef\u4eba\u6c11\u5171\u548c\u570b\u5411\u793e\u6703\u4e3b\u7fa9\u8f49\u578b\u904e\u6e21\uff0c\u5e76\u65bd\u884c\u4e00\n\u4e94\u8ba1\u5212\u7b49\u7ecf\u6d4e\u8ba1\u5212\u6062\u590d\u548c\u53d1\u5c55\u793e\u4f1a\u4e3b\u4e49\u7ecf\u6d4e\u3002\u7136\u800c\uff0c\u7531\u4e8e\u5927\u8e8d\u9032\u3001\u6587\u5316\u5927\u9769\u547d\u7b49\u6fc0\u9032",
+          "actual": "\u4e2d\u570b\u57281945\u5e74\u6297\u65e5\u6230\u722d\u52dd\u5229\u5f8c\uff0c\u4e2d\u570b\u5171\u7522\u9ee8\u8207\u4e2d\u570b\u570b\u6c11\u9ee8\u7684\u653f\u6cbb\u53ca\u8ecd\u4e8b\u6469\u64e6\u9010\u6f38\u64f4\n\u5927\uff0c\u6700\u7d42\u6f14\u8b8a\u6210\u96d9\u65b9\u7684\u7b2c\u4e8c\u6b21\u5167\u6230\u3002\u4e4b\u5f8c\uff0c\u6bdb\u6cfd\u4e1c\u9886\u5bfc\u7684\u4e2d\u570b\u5171\u7522\u9ee8\u548c\u5176\u4e0b\u5c5e\u7684\u4e2d\u56fd\n\u4eba\u6c11\u89e3\u653e\u519b\uff0c\u9010\u6b65\u64ca\u6557\u8523\u4e2d\u6b63\u9818\u5c0e\u7684\u570b\u6c11\u9ee8\u653f\u5e9c\u53ca\u5176\u8ecd\u968a[\u8a3b8]\u30021949\u5e7410\u67081\u65e5\uff0c\n\u4e2d\u56fd\u5171\u4ea7\u515a\u5728\u63a7\u5236\u4e2d\u570b\u5927\u90e8\u5206\u9818\u571f\u5f8c\uff0c\u5728\u5317\u4eac\u5ba3\u544a\u6210\u7acb\u4e2d\u534e\u4eba\u6c11\u5171\u548c\u56fd\u4e2d\u592e\u4eba\u6c11\u653f\n\u5e9c\uff1b\u4e2d\u83ef\u6c11\u570b\u653f\u5e9c\u5247\u65bc1949\u5e74\u5e95\u9077\u5f80\u81fa\u7063\uff0c\u6d77\u5ce1\u4e24\u5cb8\u9677\u5165\u957f\u671f\u653f\u6cbb\u5bf9\u7acb\uff0c\u662f\u73b0\u4eca\u53f0\n\u6e7e\u95ee\u9898\u5f62\u6210\u7684\u5386\u53f2\u80cc\u666f\u3002\u5efa\u570b\u521d\u671f\uff0c\u4e2d\u83ef\u4eba\u6c11\u5171\u548c\u570b\u5411\u793e\u6703\u4e3b\u7fa9\u8f49\u578b\u904e\u6e21\uff0c\u5e76\u65bd\u884c\u4e00\n\u4e94\u8ba1\u5212\u7b49\u7ecf\u6d4e\u8ba1\u5212\u6062\u590d\u548c\u53d1\u5c55\u793e\u4f1a\u4e3b\u4e49\u7ecf\u6d4e\u3002\u7136\u800c\uff0c\u7531\u4e8e\u5927\u8e8d\u9032\u3001\u6587\u5316\u5927\u9769\u547d\u7b49\u6fc0\u9032"
+        },
+        "08.png": {
+          "expected": "\u5728\u5b88\u6b63\u521b\u65b0\u4e2d\u7e41\u8363\u7f51\u7edc\u5185\u5bb9\u751f\u6001\n\u6b27\u6d32\u592e\u884c\u884c\u957f\u62c9\u52a0\u5fb7\uff1a\u4e2d\u56fd\u8131\u8d2b\u653b\u575a\u6210\u529f\u4ee4\u4eba\u60ca\u53f9\n\u65e5\u672c\u52a0\u5feb\u90e8\u7f72\u8fdc\u7a0b\u5bfc\u5f39 \u5b66\u8005\uff1a\u6b64\u4e3e\u5df2\u8d8a\u8fc7\u7ea2\u7ebf\n2000\u591a\u5bb6\u201c\u65b0\u9762\u5b54\u201d\u4f01\u4e1a\u9996\u79c0\u8fdb\u535a\u4f1a\n\u8f7d\u4eba\u6708\u7403\u63a2\u6d4b\u5de5\u7a0b\u91c7\u7528\u201c\u4e24\u6b21\u53d1\u5c04\u3001\u73af\u6708\u5bf9\u63a5\u201d\u65b9\u6848\n\u4eca\u65e5\u8f9f\u8c23 \u5317\u4eac\u7f51\u7ad9\u8f9f\u8c23\u5e73\u53f0 \u4e92\u8054\u7f51\u8054\u5408\u8f9f\u8c23\u5e73\u53f0",
+          "actual": "\u5728\u5b88\u6b63\u521b\u65b0\u4e2d\u7e41\u8363\u7f51\u7edc\u5185\u5bb9\u751f\u6001\n\u6b27\u6d32\u592e\u884c\u884c\u957f\u62c9\u52a0\u5fb7\uff1a\u4e2d\u56fd\u8131\u8d2b\u653b\u575a\u6210\u529f\u4ee4\u4eba\u60ca\u53f9\n\u65e5\u672c\u52a0\u5feb\u90e8\u7f72\u8fdc\u7a0b\u5bfc\u5f39\u5b66\u8005\uff1a\u6b64\u4e3e\u5df2\u8d8a\u8fc7\u7ea2\u7ebf\n2000\u591a\u5bb6\u201c\u65b0\u9762\u5b54\u201d\u4f01\u4e1a\u9996\u79c0\u8fdb\u535a\u4f1a\n\u8f7d\u4eba\u6708\u7403\u63a2\u6d4b\u5de5\u7a0b\u91c7\u7528\u201c\u4e24\u6b21\u53d1\u5c04\u3001\u73af\u6708\u5bf9\u63a5\u201d\u65b9\u6848\n\u4eca\u65e5\u8f9f\u8c23\u5317\u4eac\u7f51\u7ad9\u8f9f\u8c23\u5e73\u53f0\u4e92\u8054\u7f51\u8054\u5408\u8f9f\u8c23\u5e73\u53f0"
+        },
+        "09.png": {
+          "expected": "\u73b0\u5728\u798f\u5efa\u8001\u8868\u771f\u73a9\u5f97\u90a3\u4e48\u82b1\u5417\ud83e\udd26",
+          "actual": "\u73b0\u5728\u798f\u5efa\u8001\u8868\u771f\u73a9\u5f97\u90a3\u4e48\u82b1\u5417\ud83d\ude80"
+        },
+        "11.png": {
+          "expected": "\u52d5\u63fa\n\u63fa\u308c\u308b\uff0c\u63fa\u308c\n\u63fa\u308a\u8fd4\u3057\uff0c\u63fa\u308a\u7c60\n\u63fa\u3089\u3050\n\u63fa\u308b\u3050\uff0c\u63fa\u308b\u304e\u306a\u3044\n\u63fa\u3059\u308b\uff0c\u8ca7\u4e4f\u63fa\u3059\u308a\n\u63fa\u3055\u3076\u308b\n\u63fa\u3059\u3076\u308b",
+          "actual": "\u52d5\u63fa\n\u63fa\u308c\u308b\uff0c\u63fa\u308c\n\u63fa\u308a\u8fd4\u3057\uff0c\u63fa\u308a\u7c60\n\u63fa\u3089\n\u63fa\u308b\u3050\uff0c\u63fa\u308b\u304e\u306a\u3044\n\u63fa\u3059\u308b\uff0c\u8ca7\u4e4f\u63fa\u3059\u308a\n\u63fa\u3055\u3076\u308b\n\u63fa\u3059\u3076\u308b"
+        },
+        "12.png": {
+          "expected": "reading \u30c0\u30d6\u30c1 wondering what the hell dabuchi means and then pressing\ntranslate and its obviously double cheeseburger",
+          "actual": "reading \u30d6\u30c1 wondering what the hell dabuchi means and then pressing\ntranslate and its obviously double cheeseburger"
+        },
+        "13.png": {
+          "expected": "\u8fd9\u4e2a\u7ed3\u5c40\u662f\u4e07\u4e07\u6ca1\u60f3\u5230\u554a\u54c8\u54c8\ud83d\ude02\n\ufe00\ufe00\u7b80\u76f4\u662f\u8c0d\u4e2d\u8c0d\u554a\n\ufe00\ufe00\u5de1\u67e5\u7ec4\u526f\u7ec4\u957f\u67e5\u5230\u81ea\u5df1\u4e86\ud83e\udd23",
+          "actual": "\u8fd9\u4e2a\u7ed3\u5c40\u662f\u4e07\u4e07\u6ca1\u60f3\u5230\u554a\u54c8\u54c8\ud83d\ude02\n\u7b80\u76f4\u662f\u8c0d\u4e2d\u8c0d\u554a\n\u5de1\u67e5\u7ec4\u526f\u7ec4\u957f\u67e5\u5230\u81ea\u5df1\u4e86"
+        },
+        "14.png": {
+          "expected": "\u8349\u8393\u6ce1\u8299\ud83c\udf40 (@SnozakiSakura)\n\u4f60\u4eec\u5403\u6c49\u5821\u62cc\u8fd8\u662f\u4e0d\u62cc\uff1f",
+          "actual": "\u8349\u8393\u6ce1\u8299\uff08\n(@SnozakiSakura)\n\u4f60\u4eec\u5403\u6c49\u5821\u62cc\u8fd8\u662f\u4e0d\u62cc\uff1f"
+        },
+        "15.png": {
+          "expected": "F*CK THAT MARIO!\n\ud53c\uce58\uacf5\uc8fc\uc758 \uc77c\ud0c8",
+          "actual": "F*CK THAT MARIO!"
+        },
+        "16.png": {
+          "expected": "Dans le centre de la ville, il y a un tr\u00e8s joli quartier, plein de magasins\nchics et de bons restaurants. Pour se d\u00e9placer, il y a des bus, des v\u00e9los\net un m\u00e9tro. C'est pratique pour aller d'un centre commercial \u00e0 un autre,\npour aller \u00e0 l'\u00e9cole, \u00e0 la piscine, au stade ou encore au th\u00e9\u00e2tre, parce que\nla ville est tr\u00e8s grande.",
+          "actual": "Dans le centre de la ville, il y a un tr\u00e8s joli quartier, plein de magasins\nchics et de bons restaurants. Pour se d\u00e9placer, il y a des bus, des v\u00e9los\net un m\u00e9tro. C\u2019est pratique pour aller d\u2019un centre commercial \u00e0 un autre,\npour aller \u00e0 l'\u00e9cole, \u00e0 la piscine, au stade ou encore au th\u00e9\u00e2tre, parce que\nla ville est tr\u00e8s grande."
+        },
+        "18.png": {
+          "expected": "\u30c7\u30ab\u30ea\u30b9 - \u590f\u8272\u82b1\u68a8SV",
+          "actual": "\u30c7\u30ab\u30ea\u30b9-\n-\u590f\u8272\u82b1\u68a8SV"
+        },
+        "20.png": {
+          "expected": "CrystalDiskInfo\u30e6\u30fc\u30b6\u30fc\u9650\u5b9a!\n\u30c7\u30fc\u30bf\u5fa9\u65e7\u30b5\u30fc\u30d3\u30b9\n CrystalDiskInfo\u3092\u3054\u5229\u7528\u306e\u65b9\u306b\u306f\u3001\n \u30c7\u30fc\u30bf\u5fa9\u65e7\u8cbb\u7528\u309210\uff05\u5272\u5f15\u306b\u3066\u3054\u63d0\u4f9b\u3057\u307e\u3059\u3002\n \u30c7\u30fc\u30bf\u5fa9\u65e7\u306f\u5fa9\u65e7\u6b74No.1\u306e\u30a8\u30fc\u30ef\u30f3\u30c7\u30fc\u30bf\u306b\u304a\u4efb\u305b! ",
+          "actual": "CrystalDiskInfo\u30e6\u30fc\u30b6\u30fc\u9650\u5b9a!\n\u30c7\u30fc\u30bf\u5fa9\u65e7\u30b5\u30fc\u30d3\u30b9\nCrystalDiskInfo\u3092\u3054\u5229\u7528\u306e\u65b9\u306b\u306f\u3001\n\u30c7\u30fc\u30bf\u5fa9\u65e7\u8cbb\u7528\u309210\uff05\u5272\u5f15\u306b\u3066\u3054\u63d0\u4f9b\u3057\u307e\u3059\u3002\n\u30c7\u30fc\u30bf\u5fa9\u65e7\u306f\u5fa9\u65e7\u6b74No.1\u306e\u30a8\u30fc\u30ef\u30f3\u30c7\u30fc\u30bf\u306b\u304a\u4efb\u305b!"
+        }
+      },
+      "samples": [
+        {
+          "image": "01.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 494.682926
+        },
+        {
+          "image": "02.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 284.603241
+        },
+        {
+          "image": "03.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 403.996786
+        },
+        {
+          "image": "04.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 166.664783
+        },
+        {
+          "image": "05.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 343.664506
+        },
+        {
+          "image": "06.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 451.414755
+        },
+        {
+          "image": "07.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 512.474263
+        },
+        {
+          "image": "08.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 242.009189
+        },
+        {
+          "image": "09.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 499.477471
+        },
+        {
+          "image": "10.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 389.178531
+        },
+        {
+          "image": "11.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 172.027457
+        },
+        {
+          "image": "12.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 381.928531
+        },
+        {
+          "image": "13.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 207.022043
+        },
+        {
+          "image": "14.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 369.09824
+        },
+        {
+          "image": "15.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 274.668111
+        },
+        {
+          "image": "16.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 414.747984
+        },
+        {
+          "image": "17.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 165.335727
+        },
+        {
+          "image": "18.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 502.826372
+        },
+        {
+          "image": "19.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 560.21404
+        },
+        {
+          "image": "20.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 212.235027
+        },
+        {
+          "image": "01.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 532.600883
+        },
+        {
+          "image": "02.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 302.22879
+        },
+        {
+          "image": "03.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 396.592889
+        },
+        {
+          "image": "04.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 161.861408
+        },
+        {
+          "image": "05.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 335.334141
+        },
+        {
+          "image": "06.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 445.382122
+        },
+        {
+          "image": "07.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 552.880403
+        },
+        {
+          "image": "08.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 246.328296
+        },
+        {
+          "image": "09.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 487.543408
+        },
+        {
+          "image": "10.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 378.042254
+        },
+        {
+          "image": "11.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 176.322485
+        },
+        {
+          "image": "12.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 386.370659
+        },
+        {
+          "image": "13.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 219.340967
+        },
+        {
+          "image": "14.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 348.239053
+        },
+        {
+          "image": "15.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 267.449353
+        },
+        {
+          "image": "16.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 403.190919
+        },
+        {
+          "image": "17.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 169.830753
+        },
+        {
+          "image": "18.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 526.949981
+        },
+        {
+          "image": "19.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 580.495541
+        },
+        {
+          "image": "20.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 212.749786
+        },
+        {
+          "image": "01.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 511.795867
+        },
+        {
+          "image": "02.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 266.691085
+        },
+        {
+          "image": "03.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 393.763817
+        },
+        {
+          "image": "04.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 168.423509
+        },
+        {
+          "image": "05.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 354.397094
+        },
+        {
+          "image": "06.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 448.439595
+        },
+        {
+          "image": "07.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 546.197994
+        },
+        {
+          "image": "08.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 229.491247
+        },
+        {
+          "image": "09.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 512.662894
+        },
+        {
+          "image": "10.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 365.266622
+        },
+        {
+          "image": "11.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 157.60331
+        },
+        {
+          "image": "12.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 386.106311
+        },
+        {
+          "image": "13.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 210.760673
+        },
+        {
+          "image": "14.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 343.469477
+        },
+        {
+          "image": "15.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 288.099482
+        },
+        {
+          "image": "16.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 402.933071
+        },
+        {
+          "image": "17.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 159.845094
+        },
+        {
+          "image": "18.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 528.771435
+        },
+        {
+          "image": "19.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 577.140931
+        },
+        {
+          "image": "20.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 214.752791
+        },
+        {
+          "image": "01.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 523.405692
+        },
+        {
+          "image": "02.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 290.735884
+        },
+        {
+          "image": "03.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 384.673755
+        },
+        {
+          "image": "04.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 172.158167
+        },
+        {
+          "image": "05.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 338.768471
+        },
+        {
+          "image": "06.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 430.748958
+        },
+        {
+          "image": "07.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 532.984594
+        },
+        {
+          "image": "08.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 230.216255
+        },
+        {
+          "image": "09.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 514.113739
+        },
+        {
+          "image": "10.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 381.991823
+        },
+        {
+          "image": "11.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 165.781427
+        },
+        {
+          "image": "12.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 376.50884
+        },
+        {
+          "image": "13.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 214.454222
+        },
+        {
+          "image": "14.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 343.621937
+        },
+        {
+          "image": "15.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 292.099851
+        },
+        {
+          "image": "16.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 440.48136
+        },
+        {
+          "image": "17.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 172.985235
+        },
+        {
+          "image": "18.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 499.347814
+        },
+        {
+          "image": "19.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 559.783304
+        },
+        {
+          "image": "20.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 208.661149
+        },
+        {
+          "image": "01.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 504.603509
+        },
+        {
+          "image": "02.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 270.059166
+        },
+        {
+          "image": "03.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 371.601164
+        },
+        {
+          "image": "04.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 170.128524
+        },
+        {
+          "image": "05.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 349.083882
+        },
+        {
+          "image": "06.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 437.382338
+        },
+        {
+          "image": "07.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 551.313639
+        },
+        {
+          "image": "08.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 223.382405
+        },
+        {
+          "image": "09.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 481.840986
+        },
+        {
+          "image": "10.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 356.57284
+        },
+        {
+          "image": "11.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 164.265371
+        },
+        {
+          "image": "12.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 386.923179
+        },
+        {
+          "image": "13.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 212.262339
+        },
+        {
+          "image": "14.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 338.317503
+        },
+        {
+          "image": "15.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 276.608437
+        },
+        {
+          "image": "16.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 397.275138
+        },
+        {
+          "image": "17.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 150.605852
+        },
+        {
+          "image": "18.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 507.34635
+        },
+        {
+          "image": "19.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 595.522768
+        },
+        {
+          "image": "20.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 204.790231
+        }
+      ]
+    },
+    {
+      "name": "cpp",
+      "startup_ms": {
+        "median": 477.08594900905155,
+        "samples": [
+          476.48209900944494,
+          475.27903300942853,
+          477.08594900905155,
+          490.8061290043406,
+          481.05531799956225
+        ]
+      },
+      "probe_ms": {
+        "median": 315.35855,
+        "samples": [
+          314.852051,
+          313.579765,
+          315.35855,
+          329.01312,
+          319.17101
+        ]
+      },
+      "reject_ms": {
+        "median": 0.150279,
+        "samples": [
+          0.14239,
+          0.15755,
+          0.150279,
+          0.14199,
+          0.163869
+        ]
+      },
+      "rss_kib": [
+        213268,
+        216792,
+        213212,
+        213488,
+        213192
+      ],
+      "cpu_ms_per_request": 2284.0,
+      "requests": 100,
+      "latency_ms": {
+        "median": 361.54699300000004,
+        "median_ci": [
+          254.2825085,
+          430.2219085
+        ],
+        "mean": 351.55683281,
+        "p90": 528.5792064,
+        "p95": 573.2766147,
+        "p99": 579.78458148,
+        "min": 151.580339,
+        "max": 593.337432
+      },
+      "median_by_trial": {
+        "0": 363.9353505,
+        "1": 368.6168425,
+        "2": 357.462371,
+        "3": 360.536992,
+        "4": 362.158542
+      },
+      "median_by_image": {
+        "01.png": 512.789282,
+        "02.png": 267.192365,
+        "03.png": 386.325098,
+        "04.png": 163.144273,
+        "05.png": 346.116728,
+        "06.png": 454.400646,
+        "07.png": 537.979197,
+        "08.png": 241.372652,
+        "09.png": 503.836628,
+        "10.png": 375.244333,
+        "11.png": 165.069989,
+        "12.png": 380.620367,
+        "13.png": 207.870041,
+        "14.png": 359.53764,
+        "15.png": 275.787018,
+        "16.png": 406.043171,
+        "17.png": 164.832929,
+        "18.png": 512.220175,
+        "19.png": 579.161306,
+        "20.png": 202.032008
+      },
+      "worst_image": {
+        "name": "19.png",
+        "median_ms": 579.161306
+      },
+      "heavy_images": [
+        "19.png",
+        "07.png",
+        "01.png",
+        "18.png"
+      ],
+      "heavy_median_ms": 525.3842394999999,
+      "budget_ms": 1000.0,
+      "images_over_budget": [],
+      "exact_match_rate": 0.3,
+      "character_error_rate": 0.013447031813709412,
+      "mismatches": {
+        "01.png": {
+          "expected": "\u30e2\u30a8\u30c1\u30e3\u30c3\u30ab\u30d5\u30a1\u30c3\u30af (\u30e2\u30a8\u30c1\u30e3\u30c3\u30ab\u30d5\u30a1\u30a4\u30a2 Trixy\nNextgen Earrape 200bpm Zenless Zone Zero Tool)",
+          "actual": "\u30e2\u30a8\u30c1\u30e3\u30c3\u30ab\u30d5\u30a1\u30c3\u30af(\u30e2\u30a8\u30c1\u30e3\u30c3\u30ab\u30d5\u30a1\u30a4\u30a2Trixy\nNextgen Earrape 200bpm Zenless Zone Zero Tool)"
+        },
+        "03.png": {
+          "expected": "Voorpagina Laatste nieuws Video's Binnenland Buitenland Regionaal nieuws",
+          "actual": "Voorpagina\nLaatste nieuws\nVideo's\nBinnenland\nBuitenland\nRegionaal nieuws"
+        },
+        "05.png": {
+          "expected": "Goedemorgen, waarmee\nkunnen wij u helpen?",
+          "actual": "Goedemorgen, v\nwaarmee\nkunnen wij u helpen?"
+        },
+        "06.png": {
+          "expected": "\u4e2d\u570b\u57281945\u5e74\u6297\u65e5\u6230\u722d\u52dd\u5229\u5f8c\uff0c\u4e2d\u570b\u5171\u7522\u9ee8\u8207\u4e2d\u570b\u570b\u6c11\u9ee8\u7684\u653f\u6cbb\u53ca\u8ecd\u4e8b\u6469\u64e6\u9010\u6f38\u64f4\n\u5927\uff0c\u6700\u7d42\u6f14\u8b8a\u6210\u96d9\u65b9\u7684\u7b2c\u4e8c\u6b21\u5167\u6230\u3002\u4e4b\u5f8c\uff0c\u6bdb\u6cfd\u4e1c\u9886\u5bfc\u7684\u4e2d\u570b\u5171\u7522\u9ee8\u548c\u5176\u4e0b\u5c5e\u7684\u4e2d\u56fd\n\u4eba\u6c11\u89e3\u653e\u519b\uff0c\u9010\u6b65\u64ca\u6557\u8523\u4e2d\u6b63\u9818\u5c0e\u7684\u570b\u6c11\u9ee8\u653f\u5e9c\u53ca\u5176\u8ecd\u968a[\u8a3b 8]\u30021949\u5e7410\u67081\u65e5\uff0c\n\u4e2d\u56fd\u5171\u4ea7\u515a\u5728\u63a7\u5236\u4e2d\u570b\u5927\u90e8\u5206\u9818\u571f\u5f8c\uff0c\u5728\u5317\u4eac\u5ba3\u544a\u6210\u7acb\u4e2d\u534e\u4eba\u6c11\u5171\u548c\u56fd\u4e2d\u592e\u4eba\u6c11\u653f\n\u5e9c\uff1b\u4e2d\u83ef\u6c11\u570b\u653f\u5e9c\u5247\u65bc1949\u5e74\u5e95\u9077\u5f80\u81fa\u7063\uff0c\u6d77\u5ce1\u4e24\u5cb8\u9677\u5165\u957f\u671f\u653f\u6cbb\u5bf9\u7acb\uff0c\u662f\u73b0\u4eca\u53f0\n\u6e7e\u95ee\u9898\u5f62\u6210\u7684\u5386\u53f2\u80cc\u666f\u3002\u5efa\u570b\u521d\u671f\uff0c\u4e2d\u83ef\u4eba\u6c11\u5171\u548c\u570b\u5411\u793e\u6703\u4e3b\u7fa9\u8f49\u578b\u904e\u6e21\uff0c\u5e76\u65bd\u884c\u4e00\n\u4e94\u8ba1\u5212\u7b49\u7ecf\u6d4e\u8ba1\u5212\u6062\u590d\u548c\u53d1\u5c55\u793e\u4f1a\u4e3b\u4e49\u7ecf\u6d4e\u3002\u7136\u800c\uff0c\u7531\u4e8e\u5927\u8e8d\u9032\u3001\u6587\u5316\u5927\u9769\u547d\u7b49\u6fc0\u9032",
+          "actual": "\u4e2d\u570b\u57281945\u5e74\u6297\u65e5\u6230\u722d\u52dd\u5229\u5f8c\uff0c\u4e2d\u570b\u5171\u7522\u9ee8\u8207\u4e2d\u570b\u570b\u6c11\u9ee8\u7684\u653f\u6cbb\u53ca\u8ecd\u4e8b\u6469\u64e6\u9010\u6f38\u64f4\n\u5927\uff0c\u6700\u7d42\u6f14\u8b8a\u6210\u96d9\u65b9\u7684\u7b2c\u4e8c\u6b21\u5167\u6230\u3002\u4e4b\u5f8c\uff0c\u6bdb\u6cfd\u4e1c\u9886\u5bfc\u7684\u4e2d\u570b\u5171\u7522\u9ee8\u548c\u5176\u4e0b\u5c5e\u7684\u4e2d\u56fd\n\u4eba\u6c11\u89e3\u653e\u519b\uff0c\u9010\u6b65\u64ca\u6557\u8523\u4e2d\u6b63\u9818\u5c0e\u7684\u570b\u6c11\u9ee8\u653f\u5e9c\u53ca\u5176\u8ecd\u968a[\u8a3b8]\u30021949\u5e7410\u67081\u65e5\uff0c\n\u4e2d\u56fd\u5171\u4ea7\u515a\u5728\u63a7\u5236\u4e2d\u570b\u5927\u90e8\u5206\u9818\u571f\u5f8c\uff0c\u5728\u5317\u4eac\u5ba3\u544a\u6210\u7acb\u4e2d\u534e\u4eba\u6c11\u5171\u548c\u56fd\u4e2d\u592e\u4eba\u6c11\u653f\n\u5e9c\uff1b\u4e2d\u83ef\u6c11\u570b\u653f\u5e9c\u5247\u65bc1949\u5e74\u5e95\u9077\u5f80\u81fa\u7063\uff0c\u6d77\u5ce1\u4e24\u5cb8\u9677\u5165\u957f\u671f\u653f\u6cbb\u5bf9\u7acb\uff0c\u662f\u73b0\u4eca\u53f0\n\u6e7e\u95ee\u9898\u5f62\u6210\u7684\u5386\u53f2\u80cc\u666f\u3002\u5efa\u570b\u521d\u671f\uff0c\u4e2d\u83ef\u4eba\u6c11\u5171\u548c\u570b\u5411\u793e\u6703\u4e3b\u7fa9\u8f49\u578b\u904e\u6e21\uff0c\u5e76\u65bd\u884c\u4e00\n\u4e94\u8ba1\u5212\u7b49\u7ecf\u6d4e\u8ba1\u5212\u6062\u590d\u548c\u53d1\u5c55\u793e\u4f1a\u4e3b\u4e49\u7ecf\u6d4e\u3002\u7136\u800c\uff0c\u7531\u4e8e\u5927\u8e8d\u9032\u3001\u6587\u5316\u5927\u9769\u547d\u7b49\u6fc0\u9032"
+        },
+        "08.png": {
+          "expected": "\u5728\u5b88\u6b63\u521b\u65b0\u4e2d\u7e41\u8363\u7f51\u7edc\u5185\u5bb9\u751f\u6001\n\u6b27\u6d32\u592e\u884c\u884c\u957f\u62c9\u52a0\u5fb7\uff1a\u4e2d\u56fd\u8131\u8d2b\u653b\u575a\u6210\u529f\u4ee4\u4eba\u60ca\u53f9\n\u65e5\u672c\u52a0\u5feb\u90e8\u7f72\u8fdc\u7a0b\u5bfc\u5f39 \u5b66\u8005\uff1a\u6b64\u4e3e\u5df2\u8d8a\u8fc7\u7ea2\u7ebf\n2000\u591a\u5bb6\u201c\u65b0\u9762\u5b54\u201d\u4f01\u4e1a\u9996\u79c0\u8fdb\u535a\u4f1a\n\u8f7d\u4eba\u6708\u7403\u63a2\u6d4b\u5de5\u7a0b\u91c7\u7528\u201c\u4e24\u6b21\u53d1\u5c04\u3001\u73af\u6708\u5bf9\u63a5\u201d\u65b9\u6848\n\u4eca\u65e5\u8f9f\u8c23 \u5317\u4eac\u7f51\u7ad9\u8f9f\u8c23\u5e73\u53f0 \u4e92\u8054\u7f51\u8054\u5408\u8f9f\u8c23\u5e73\u53f0",
+          "actual": "\u5728\u5b88\u6b63\u521b\u65b0\u4e2d\u7e41\u8363\u7f51\u7edc\u5185\u5bb9\u751f\u6001\n\u6b27\u6d32\u592e\u884c\u884c\u957f\u62c9\u52a0\u5fb7\uff1a\u4e2d\u56fd\u8131\u8d2b\u653b\u575a\u6210\u529f\u4ee4\u4eba\u60ca\u53f9\n\u65e5\u672c\u52a0\u5feb\u90e8\u7f72\u8fdc\u7a0b\u5bfc\u5f39\u5b66\u8005\uff1a\u6b64\u4e3e\u5df2\u8d8a\u8fc7\u7ea2\u7ebf\n2000\u591a\u5bb6\u201c\u65b0\u9762\u5b54\u201d\u4f01\u4e1a\u9996\u79c0\u8fdb\u535a\u4f1a\n\u8f7d\u4eba\u6708\u7403\u63a2\u6d4b\u5de5\u7a0b\u91c7\u7528\u201c\u4e24\u6b21\u53d1\u5c04\u3001\u73af\u6708\u5bf9\u63a5\u201d\u65b9\u6848\n\u4eca\u65e5\u8f9f\u8c23\u5317\u4eac\u7f51\u7ad9\u8f9f\u8c23\u5e73\u53f0\u4e92\u8054\u7f51\u8054\u5408\u8f9f\u8c23\u5e73\u53f0"
+        },
+        "09.png": {
+          "expected": "\u73b0\u5728\u798f\u5efa\u8001\u8868\u771f\u73a9\u5f97\u90a3\u4e48\u82b1\u5417\ud83e\udd26",
+          "actual": "\u73b0\u5728\u798f\u5efa\u8001\u8868\u771f\u73a9\u5f97\u90a3\u4e48\u82b1\u5417\ud83d\ude80"
+        },
+        "11.png": {
+          "expected": "\u52d5\u63fa\n\u63fa\u308c\u308b\uff0c\u63fa\u308c\n\u63fa\u308a\u8fd4\u3057\uff0c\u63fa\u308a\u7c60\n\u63fa\u3089\u3050\n\u63fa\u308b\u3050\uff0c\u63fa\u308b\u304e\u306a\u3044\n\u63fa\u3059\u308b\uff0c\u8ca7\u4e4f\u63fa\u3059\u308a\n\u63fa\u3055\u3076\u308b\n\u63fa\u3059\u3076\u308b",
+          "actual": "\u52d5\u63fa\n\u63fa\u308c\u308b\uff0c\u63fa\u308c\n\u63fa\u308a\u8fd4\u3057\uff0c\u63fa\u308a\u7c60\n\u63fa\u3089\n\u63fa\u308b\u3050\uff0c\u63fa\u308b\u304e\u306a\u3044\n\u63fa\u3059\u308b\uff0c\u8ca7\u4e4f\u63fa\u3059\u308a\n\u63fa\u3055\u3076\u308b\n\u63fa\u3059\u3076\u308b"
+        },
+        "12.png": {
+          "expected": "reading \u30c0\u30d6\u30c1 wondering what the hell dabuchi means and then pressing\ntranslate and its obviously double cheeseburger",
+          "actual": "reading \u30d6\u30c1 wondering what the hell dabuchi means and then pressing\ntranslate and its obviously double cheeseburger"
+        },
+        "13.png": {
+          "expected": "\u8fd9\u4e2a\u7ed3\u5c40\u662f\u4e07\u4e07\u6ca1\u60f3\u5230\u554a\u54c8\u54c8\ud83d\ude02\n\ufe00\ufe00\u7b80\u76f4\u662f\u8c0d\u4e2d\u8c0d\u554a\n\ufe00\ufe00\u5de1\u67e5\u7ec4\u526f\u7ec4\u957f\u67e5\u5230\u81ea\u5df1\u4e86\ud83e\udd23",
+          "actual": "\u8fd9\u4e2a\u7ed3\u5c40\u662f\u4e07\u4e07\u6ca1\u60f3\u5230\u554a\u54c8\u54c8\ud83d\ude02\n\u7b80\u76f4\u662f\u8c0d\u4e2d\u8c0d\u554a\n\u5de1\u67e5\u7ec4\u526f\u7ec4\u957f\u67e5\u5230\u81ea\u5df1\u4e86"
+        },
+        "14.png": {
+          "expected": "\u8349\u8393\u6ce1\u8299\ud83c\udf40 (@SnozakiSakura)\n\u4f60\u4eec\u5403\u6c49\u5821\u62cc\u8fd8\u662f\u4e0d\u62cc\uff1f",
+          "actual": "\u8349\u8393\u6ce1\u8299\uff08\n(@SnozakiSakura)\n\u4f60\u4eec\u5403\u6c49\u5821\u62cc\u8fd8\u662f\u4e0d\u62cc\uff1f"
+        },
+        "15.png": {
+          "expected": "F*CK THAT MARIO!\n\ud53c\uce58\uacf5\uc8fc\uc758 \uc77c\ud0c8",
+          "actual": "F*CK THAT MARIO!"
+        },
+        "16.png": {
+          "expected": "Dans le centre de la ville, il y a un tr\u00e8s joli quartier, plein de magasins\nchics et de bons restaurants. Pour se d\u00e9placer, il y a des bus, des v\u00e9los\net un m\u00e9tro. C'est pratique pour aller d'un centre commercial \u00e0 un autre,\npour aller \u00e0 l'\u00e9cole, \u00e0 la piscine, au stade ou encore au th\u00e9\u00e2tre, parce que\nla ville est tr\u00e8s grande.",
+          "actual": "Dans le centre de la ville, il y a un tr\u00e8s joli quartier, plein de magasins\nchics et de bons restaurants. Pour se d\u00e9placer, il y a des bus, des v\u00e9los\net un m\u00e9tro. C\u2019est pratique pour aller d\u2019un centre commercial \u00e0 un autre,\npour aller \u00e0 l'\u00e9cole, \u00e0 la piscine, au stade ou encore au th\u00e9\u00e2tre, parce que\nla ville est tr\u00e8s grande."
+        },
+        "18.png": {
+          "expected": "\u30c7\u30ab\u30ea\u30b9 - \u590f\u8272\u82b1\u68a8SV",
+          "actual": "\u30c7\u30ab\u30ea\u30b9-\n-\u590f\u8272\u82b1\u68a8SV"
+        },
+        "20.png": {
+          "expected": "CrystalDiskInfo\u30e6\u30fc\u30b6\u30fc\u9650\u5b9a!\n\u30c7\u30fc\u30bf\u5fa9\u65e7\u30b5\u30fc\u30d3\u30b9\n CrystalDiskInfo\u3092\u3054\u5229\u7528\u306e\u65b9\u306b\u306f\u3001\n \u30c7\u30fc\u30bf\u5fa9\u65e7\u8cbb\u7528\u309210\uff05\u5272\u5f15\u306b\u3066\u3054\u63d0\u4f9b\u3057\u307e\u3059\u3002\n \u30c7\u30fc\u30bf\u5fa9\u65e7\u306f\u5fa9\u65e7\u6b74No.1\u306e\u30a8\u30fc\u30ef\u30f3\u30c7\u30fc\u30bf\u306b\u304a\u4efb\u305b! ",
+          "actual": "CrystalDiskInfo\u30e6\u30fc\u30b6\u30fc\u9650\u5b9a!\n\u30c7\u30fc\u30bf\u5fa9\u65e7\u30b5\u30fc\u30d3\u30b9\nCrystalDiskInfo\u3092\u3054\u5229\u7528\u306e\u65b9\u306b\u306f\u3001\n\u30c7\u30fc\u30bf\u5fa9\u65e7\u8cbb\u7528\u309210\uff05\u5272\u5f15\u306b\u3066\u3054\u63d0\u4f9b\u3057\u307e\u3059\u3002\n\u30c7\u30fc\u30bf\u5fa9\u65e7\u306f\u5fa9\u65e7\u6b74No.1\u306e\u30a8\u30fc\u30ef\u30f3\u30c7\u30fc\u30bf\u306b\u304a\u4efb\u305b!"
+        }
+      },
+      "samples": [
+        {
+          "image": "01.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 512.789282
+        },
+        {
+          "image": "02.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 274.712441
+        },
+        {
+          "image": "03.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 386.325098
+        },
+        {
+          "image": "04.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 163.144273
+        },
+        {
+          "image": "05.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 346.116728
+        },
+        {
+          "image": "06.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 471.449705
+        },
+        {
+          "image": "07.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 515.580174
+        },
+        {
+          "image": "08.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 244.192782
+        },
+        {
+          "image": "09.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 503.836628
+        },
+        {
+          "image": "10.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 377.750604
+        },
+        {
+          "image": "11.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 157.402261
+        },
+        {
+          "image": "12.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 365.275292
+        },
+        {
+          "image": "13.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 207.550842
+        },
+        {
+          "image": "14.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 362.595409
+        },
+        {
+          "image": "15.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 261.237041
+        },
+        {
+          "image": "16.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 403.457727
+        },
+        {
+          "image": "17.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 170.642601
+        },
+        {
+          "image": "18.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 512.574932
+        },
+        {
+          "image": "19.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 593.337432
+        },
+        {
+          "image": "20.png",
+          "trial": 0,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 201.174851
+        },
+        {
+          "image": "01.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 577.259959
+        },
+        {
+          "image": "02.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 256.575145
+        },
+        {
+          "image": "03.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 399.16468
+        },
+        {
+          "image": "04.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 164.996589
+        },
+        {
+          "image": "05.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 340.368866
+        },
+        {
+          "image": "06.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 454.400646
+        },
+        {
+          "image": "07.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 537.979197
+        },
+        {
+          "image": "08.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 245.549649
+        },
+        {
+          "image": "09.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 484.188248
+        },
+        {
+          "image": "10.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 379.448489
+        },
+        {
+          "image": "11.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 169.856655
+        },
+        {
+          "image": "12.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 360.498577
+        },
+        {
+          "image": "13.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 207.870041
+        },
+        {
+          "image": "14.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 376.735108
+        },
+        {
+          "image": "15.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 275.787018
+        },
+        {
+          "image": "16.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 411.019026
+        },
+        {
+          "image": "17.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 151.580339
+        },
+        {
+          "image": "18.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 483.446509
+        },
+        {
+          "image": "19.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 579.647684
+        },
+        {
+          "image": "20.png",
+          "trial": 1,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 208.19263
+        },
+        {
+          "image": "01.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 501.301477
+        },
+        {
+          "image": "02.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 249.628136
+        },
+        {
+          "image": "03.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 391.318315
+        },
+        {
+          "image": "04.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 161.627079
+        },
+        {
+          "image": "05.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 345.961319
+        },
+        {
+          "image": "06.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 460.15873
+        },
+        {
+          "image": "07.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 513.366781
+        },
+        {
+          "image": "08.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 223.226616
+        },
+        {
+          "image": "09.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 504.007289
+        },
+        {
+          "image": "10.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 355.387102
+        },
+        {
+          "image": "11.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 164.459601
+        },
+        {
+          "image": "12.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 400.897326
+        },
+        {
+          "image": "13.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 203.319614
+        },
+        {
+          "image": "14.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 359.53764
+        },
+        {
+          "image": "15.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 280.210346
+        },
+        {
+          "image": "16.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 406.043171
+        },
+        {
+          "image": "17.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 171.007531
+        },
+        {
+          "image": "18.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 512.220175
+        },
+        {
+          "image": "19.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 577.781699
+        },
+        {
+          "image": "20.png",
+          "trial": 2,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 202.032008
+        },
+        {
+          "image": "01.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 485.914803
+        },
+        {
+          "image": "02.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 267.192365
+        },
+        {
+          "image": "03.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 377.855296
+        },
+        {
+          "image": "04.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 170.854802
+        },
+        {
+          "image": "05.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 356.785508
+        },
+        {
+          "image": "06.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 446.65591
+        },
+        {
+          "image": "07.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 540.197362
+        },
+        {
+          "image": "08.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 241.372652
+        },
+        {
+          "image": "09.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 495.779684
+        },
+        {
+          "image": "10.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 364.288476
+        },
+        {
+          "image": "11.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 165.069989
+        },
+        {
+          "image": "12.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 401.247516
+        },
+        {
+          "image": "13.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 213.531524
+        },
+        {
+          "image": "14.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 353.447648
+        },
+        {
+          "image": "15.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 273.444996
+        },
+        {
+          "image": "16.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 395.178584
+        },
+        {
+          "image": "17.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 152.282207
+        },
+        {
+          "image": "18.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 528.390358
+        },
+        {
+          "image": "19.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 579.161306
+        },
+        {
+          "image": "20.png",
+          "trial": 3,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 209.497977
+        },
+        {
+          "image": "01.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 530.278842
+        },
+        {
+          "image": "02.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 273.304947
+        },
+        {
+          "image": "03.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 383.09787
+        },
+        {
+          "image": "04.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 161.536039
+        },
+        {
+          "image": "05.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 349.072751
+        },
+        {
+          "image": "06.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 425.328874
+        },
+        {
+          "image": "07.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 540.79276
+        },
+        {
+          "image": "08.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 233.365556
+        },
+        {
+          "image": "09.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 510.363371
+        },
+        {
+          "image": "10.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 375.244333
+        },
+        {
+          "image": "11.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 171.44407
+        },
+        {
+          "image": "12.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 380.620367
+        },
+        {
+          "image": "13.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 217.096314
+        },
+        {
+          "image": "14.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 345.887391
+        },
+        {
+          "image": "15.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 283.042428
+        },
+        {
+          "image": "16.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 437.803617
+        },
+        {
+          "image": "17.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 164.832929
+        },
+        {
+          "image": "18.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 503.568862
+        },
+        {
+          "image": "19.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 1,
+          "latency_ms": 573.066965
+        },
+        {
+          "image": "20.png",
+          "trial": 4,
+          "repetition": 0,
+          "position": 0,
+          "latency_ms": 198.582919
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "base": "c",
+      "other": "cpp",
+      "requests": 100,
+      "median_delta_ms": -0.8132519999999914,
+      "median_delta_ci": [
+        -6.283721499999999,
+        2.6447520000000537
+      ],
+      "other_faster": 53,
+      "base_faster": 47,
+      "ties": 0,
+      "significant": false,
+      "median_delta_by_image": {
+        "01.png": 18.10635599999995,
+        "02.png": -17.062948999999975,
+        "03.png": -2.445502000000033,
+        "04.png": -3.5205100000000016,
+        "05.png": 2.452222000000006,
+        "06.png": 11.719134999999994,
+        "07.png": -10.520878999999923,
+        "08.png": 2.183593000000002,
+        "09.png": -3.355160000000012,
+        "10.png": -9.879519999999957,
+        "11.png": -0.7114380000000153,
+        "12.png": -6.302812000000017,
+        "13.png": -0.9226979999999969,
+        "14.png": 9.825711000000013,
+        "15.png": -7.889136000000008,
+        "16.png": 3.1100999999999885,
+        "17.png": 5.306874000000022,
+        "18.png": -3.7774879999999484,
+        "19.png": 0.64076799999998,
+        "20.png": -6.207312000000002
+      },
+      "heavy_images": [
+        "01.png",
+        "07.png",
+        "18.png",
+        "19.png"
+      ],
+      "heavy_median_delta_ms": -0.10354449999999815
+    }
+  ]
+}
