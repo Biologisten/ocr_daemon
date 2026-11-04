@@ -1,7 +1,7 @@
 {
   "machine": {
     "platform": "Linux-7.3.1-1-cachyos-x86_64-with-glibc2.44",
-    "python": "3.14.8 (main, Oct 13 2026, 10:33:10) [GCC 16.2.1 20260810]",
+    "python": "3.14.9 (main, Nov  2 2026, 12:21:11) [GCC 16.2.1 20260810]",
     "cpu_count": 12
   },
   "config": {
@@ -36,97 +36,97 @@
     {
       "name": "c",
       "startup_ms": {
-        "median": 458.5408639977686,
+        "median": 394.2379239888396,
         "samples": [
-          436.9594260060694,
-          458.5408639977686,
-          466.66694001760334,
-          435.6287629925646,
-          479.61904300609604
+          388.3771389955655,
+          390.2679139864631,
+          394.2379239888396,
+          397.00664600241,
+          394.56211298238486
         ]
       },
       "probe_ms": {
-        "median": 316.983696,
+        "median": 292.702769,
         "samples": [
-          314.608972,
-          316.983696,
-          325.020882,
-          314.301674,
-          338.089544
+          286.269166,
+          288.977789,
+          292.702769,
+          295.59582,
+          293.358627
         ]
       },
       "reject_ms": {
-        "median": 0.155229,
+        "median": 0.141799,
         "samples": [
-          0.14738,
-          0.159369,
-          0.13956,
-          0.155229,
-          0.16353
+          0.17131,
+          0.17796,
+          0.141799,
+          0.135609,
+          0.13766
         ]
       },
       "rss_kib": [
-        226912,
-        322588,
-        321880,
-        243188,
-        243276
+        327852,
+        242852,
+        339780,
+        298372,
+        252536
       ],
-      "cpu_ms_per_request": 2286.0,
+      "cpu_ms_per_request": 2070.5,
       "requests": 100,
       "latency_ms": {
-        "median": 360.91973099999996,
+        "median": 341.656841,
         "median_ci": [
-          253.41234599999999,
-          424.2865205
+          237.244104,
+          398.26300249999997
         ],
-        "mean": 352.68024470999995,
-        "p90": 529.1543798,
-        "p95": 553.2255480499999,
-        "p99": 580.6458132700001,
-        "min": 150.605852,
-        "max": 595.522768
+        "mean": 334.35693316,
+        "p90": 494.7228678,
+        "p95": 545.2082417,
+        "p99": 567.8258295200002,
+        "min": 138.146752,
+        "max": 602.20076
       },
       "median_by_trial": {
-        "0": 375.5133855,
-        "1": 363.1406535,
-        "2": 359.831858,
-        "3": 360.06538850000004,
-        "4": 352.828361
+        "0": 347.365765,
+        "1": 335.8283335,
+        "2": 330.1499135,
+        "3": 353.76157750000004,
+        "4": 362.5456125
       },
       "median_by_image": {
-        "01.png": 511.795867,
-        "02.png": 284.603241,
-        "03.png": 393.763817,
-        "04.png": 168.423509,
-        "05.png": 343.664506,
-        "06.png": 445.382122,
-        "07.png": 546.197994,
-        "08.png": 230.216255,
-        "09.png": 499.477471,
-        "10.png": 378.042254,
-        "11.png": 165.781427,
-        "12.png": 386.106311,
-        "13.png": 212.262339,
-        "14.png": 343.621937,
-        "15.png": 276.608437,
-        "16.png": 403.190919,
-        "17.png": 165.335727,
-        "18.png": 507.34635,
-        "19.png": 577.140931,
-        "20.png": 212.235027
+        "01.png": 491.391931,
+        "02.png": 259.856841,
+        "03.png": 361.753735,
+        "04.png": 144.195036,
+        "05.png": 325.623497,
+        "06.png": 416.001643,
+        "07.png": 482.751515,
+        "08.png": 218.877585,
+        "09.png": 489.546326,
+        "10.png": 365.662474,
+        "11.png": 147.148456,
+        "12.png": 357.354647,
+        "13.png": 198.315434,
+        "14.png": 323.653502,
+        "15.png": 255.610623,
+        "16.png": 380.524362,
+        "17.png": 144.092236,
+        "18.png": 494.295183,
+        "19.png": 551.137724,
+        "20.png": 188.193472
       },
       "worst_image": {
         "name": "19.png",
-        "median_ms": 577.140931
+        "median_ms": 551.137724
       },
       "heavy_images": [
         "19.png",
-        "07.png",
+        "18.png",
         "01.png",
-        "18.png"
+        "09.png"
       ],
-      "heavy_median_ms": 528.9969305,
+      "heavy_median_ms": 492.84355700000003,
       "budget_ms": 1000.0,
       "images_over_budget": [],
       "exact_match_rate": 0.3,
@@ -195,797 +195,797 @@
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 494.682926
+          "latency_ms": 602.20076
         },
         {
           "image": "02.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 284.603241
+          "latency_ms": 259.856841
         },
         {
           "image": "03.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 403.996786
+          "latency_ms": 356.927478
         },
         {
           "image": "04.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 166.664783
+          "latency_ms": 151.379426
         },
         {
           "image": "05.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 343.664506
+          "latency_ms": 337.804052
         },
         {
           "image": "06.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 451.414755
+          "latency_ms": 417.814097
         },
         {
           "image": "07.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 512.474263
+          "latency_ms": 480.709281
         },
         {
           "image": "08.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 242.009189
+          "latency_ms": 256.55949
         },
         {
           "image": "09.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 499.477471
+          "latency_ms": 487.636802
         },
         {
           "image": "10.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 389.178531
+          "latency_ms": 365.662474
         },
         {
           "image": "11.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 172.027457
+          "latency_ms": 154.061688
         },
         {
           "image": "12.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 381.928531
+          "latency_ms": 357.354647
         },
         {
           "image": "13.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 207.022043
+          "latency_ms": 196.906658
         },
         {
           "image": "14.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 369.09824
+          "latency_ms": 323.653502
         },
         {
           "image": "15.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 274.668111
+          "latency_ms": 255.610623
         },
         {
           "image": "16.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 414.747984
+          "latency_ms": 376.218094
         },
         {
           "image": "17.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 165.335727
+          "latency_ms": 139.646038
         },
         {
           "image": "18.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 502.826372
+          "latency_ms": 498.572031
         },
         {
           "image": "19.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 560.21404
+          "latency_ms": 545.08321
         },
         {
           "image": "20.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 212.235027
+          "latency_ms": 194.323245
         },
         {
           "image": "01.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 532.600883
+          "latency_ms": 493.988613
         },
         {
           "image": "02.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 302.22879
+          "latency_ms": 267.31129
         },
         {
           "image": "03.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 396.592889
+          "latency_ms": 357.684077
         },
         {
           "image": "04.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 161.861408
+          "latency_ms": 144.707884
         },
         {
           "image": "05.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 335.334141
+          "latency_ms": 325.623497
         },
         {
           "image": "06.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 445.382122
+          "latency_ms": 412.641872
         },
         {
           "image": "07.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 552.880403
+          "latency_ms": 478.138538
         },
         {
           "image": "08.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 246.328296
+          "latency_ms": 214.536728
         },
         {
           "image": "09.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 487.543408
+          "latency_ms": 489.546326
         },
         {
           "image": "10.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 378.042254
+          "latency_ms": 346.03317
         },
         {
           "image": "11.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 176.322485
+          "latency_ms": 140.180287
         },
         {
           "image": "12.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 386.370659
+          "latency_ms": 355.422153
         },
         {
           "image": "13.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 219.340967
+          "latency_ms": 195.074323
         },
         {
           "image": "14.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 348.239053
+          "latency_ms": 318.535427
         },
         {
           "image": "15.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 267.449353
+          "latency_ms": 256.879939
         },
         {
           "image": "16.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 403.190919
+          "latency_ms": 376.780783
         },
         {
           "image": "17.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 169.830753
+          "latency_ms": 145.706381
         },
         {
           "image": "18.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 526.949981
+          "latency_ms": 482.084207
         },
         {
           "image": "19.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 580.495541
+          "latency_ms": 551.137724
         },
         {
           "image": "20.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 212.749786
+          "latency_ms": 184.645182
         },
         {
           "image": "01.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 511.795867
+          "latency_ms": 483.796292
         },
         {
           "image": "02.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 266.691085
+          "latency_ms": 270.041702
         },
         {
           "image": "03.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 393.763817
+          "latency_ms": 361.753735
         },
         {
           "image": "04.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 168.423509
+          "latency_ms": 144.028326
         },
         {
           "image": "05.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 354.397094
+          "latency_ms": 320.221132
         },
         {
           "image": "06.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 448.439595
+          "latency_ms": 451.345194
         },
         {
           "image": "07.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 546.197994
+          "latency_ms": 489.411087
         },
         {
           "image": "08.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 229.491247
+          "latency_ms": 220.9935
         },
         {
           "image": "09.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 512.662894
+          "latency_ms": 509.497551
         },
         {
           "image": "10.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 365.266622
+          "latency_ms": 340.078695
         },
         {
           "image": "11.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 157.60331
+          "latency_ms": 145.725241
         },
         {
           "image": "12.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 386.106311
+          "latency_ms": 343.234987
         },
         {
           "image": "13.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 210.760673
+          "latency_ms": 198.315434
         },
         {
           "image": "14.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 343.469477
+          "latency_ms": 319.652973
         },
         {
           "image": "15.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 288.099482
+          "latency_ms": 255.433153
         },
         {
           "image": "16.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 402.933071
+          "latency_ms": 380.524362
         },
         {
           "image": "17.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 159.845094
+          "latency_ms": 143.575967
         },
         {
           "image": "18.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 528.771435
+          "latency_ms": 494.295183
         },
         {
           "image": "19.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 577.140931
+          "latency_ms": 547.583844
         },
         {
           "image": "20.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 214.752791
+          "latency_ms": 186.520346
         },
         {
           "image": "01.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 523.405692
+          "latency_ms": 491.391931
         },
         {
           "image": "02.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 290.735884
+          "latency_ms": 258.761024
         },
         {
           "image": "03.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 384.673755
+          "latency_ms": 368.178217
         },
         {
           "image": "04.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 172.158167
+          "latency_ms": 144.195036
         },
         {
           "image": "05.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 338.768471
+          "latency_ms": 320.96407
         },
         {
           "image": "06.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 430.748958
+          "latency_ms": 416.001643
         },
         {
           "image": "07.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 532.984594
+          "latency_ms": 482.751515
         },
         {
           "image": "08.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 230.216255
+          "latency_ms": 212.610533
         },
         {
           "image": "09.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 514.113739
+          "latency_ms": 505.071623
         },
         {
           "image": "10.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 381.991823
+          "latency_ms": 382.838546
         },
         {
           "image": "11.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 165.781427
+          "latency_ms": 147.148456
         },
         {
           "image": "12.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 376.50884
+          "latency_ms": 371.270259
         },
         {
           "image": "13.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 214.454222
+          "latency_ms": 208.201366
         },
         {
           "image": "14.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 343.621937
+          "latency_ms": 339.344938
         },
         {
           "image": "15.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 292.099851
+          "latency_ms": 254.964444
         },
         {
           "image": "16.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 440.48136
+          "latency_ms": 392.902158
         },
         {
           "image": "17.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 172.985235
+          "latency_ms": 144.092236
         },
         {
           "image": "18.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 499.347814
+          "latency_ms": 488.482389
         },
         {
           "image": "19.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 559.783304
+          "latency_ms": 567.478608
         },
         {
           "image": "20.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 208.661149
+          "latency_ms": 188.193472
         },
         {
           "image": "01.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 504.603509
+          "latency_ms": 484.276971
         },
         {
           "image": "02.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 270.059166
+          "latency_ms": 252.465802
         },
         {
           "image": "03.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 371.601164
+          "latency_ms": 373.315103
         },
         {
           "image": "04.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 170.128524
+          "latency_ms": 138.146752
         },
         {
           "image": "05.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 349.083882
+          "latency_ms": 328.07339
         },
         {
           "image": "06.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 437.382338
+          "latency_ms": 415.133595
         },
         {
           "image": "07.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 551.313639
+          "latency_ms": 489.786236
         },
         {
           "image": "08.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 223.382405
+          "latency_ms": 218.877585
         },
         {
           "image": "09.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 481.840986
+          "latency_ms": 476.787413
         },
         {
           "image": "10.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 356.57284
+          "latency_ms": 377.988249
         },
         {
           "image": "11.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 164.265371
+          "latency_ms": 177.901392
         },
         {
           "image": "12.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 386.923179
+          "latency_ms": 385.248889
         },
         {
           "image": "13.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 212.262339
+          "latency_ms": 201.541555
         },
         {
           "image": "14.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 338.317503
+          "latency_ms": 351.776122
         },
         {
           "image": "15.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 276.608437
+          "latency_ms": 275.695706
         },
         {
           "image": "16.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 397.275138
+          "latency_ms": 407.053728
         },
         {
           "image": "17.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 150.605852
+          "latency_ms": 168.569637
         },
         {
           "image": "18.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 507.34635
+          "latency_ms": 540.738462
         },
         {
           "image": "19.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 595.522768
+          "latency_ms": 559.7314
         },
         {
           "image": "20.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 204.790231
+          "latency_ms": 227.075323
         }
       ]
     },
     {
       "name": "cpp",
       "startup_ms": {
-        "median": 477.08594900905155,
+        "median": 407.43974698125385,
         "samples": [
-          476.48209900944494,
-          475.27903300942853,
-          477.08594900905155,
-          490.8061290043406,
-          481.05531799956225
+          399.0851700073108,
+          403.58669799752533,
+          414.8912050004583,
+          407.43974698125385,
+          409.52513099182397
         ]
       },
       "probe_ms": {
-        "median": 315.35855,
+        "median": 286.050208,
         "samples": [
-          314.852051,
-          313.579765,
-          315.35855,
-          329.01312,
-          319.17101
+          277.71828,
+          281.953749,
+          293.413996,
+          286.050208,
+          288.013292
         ]
       },
       "reject_ms": {
-        "median": 0.150279,
+        "median": 0.16888,
         "samples": [
-          0.14239,
-          0.15755,
-          0.150279,
-          0.14199,
-          0.163869
+          0.15302,
+          0.18864,
+          0.171599,
+          0.16888,
+          0.146119
         ]
       },
       "rss_kib": [
-        213268,
-        216792,
-        213212,
-        213488,
-        213192
+        216088,
+        216076,
+        216136,
+        216032,
+        215836
       ],
-      "cpu_ms_per_request": 2284.0,
+      "cpu_ms_per_request": 2046.5,
       "requests": 100,
       "latency_ms": {
-        "median": 361.54699300000004,
+        "median": 340.58932400000003,
         "median_ci": [
-          254.2825085,
-          430.2219085
+          232.8066515,
+          400.834545
         ],
-        "mean": 351.55683281,
-        "p90": 528.5792064,
-        "p95": 573.2766147,
-        "p99": 579.78458148,
-        "min": 151.580339,
-        "max": 593.337432
+        "mean": 334.52521899,
+        "p90": 494.92271669999997,
+        "p95": 559.7416327999999,
+        "p99": 605.1192095800001,
+        "min": 134.206253,
+        "max": 619.624351
       },
       "median_by_trial": {
-        "0": 363.9353505,
-        "1": 368.6168425,
-        "2": 357.462371,
-        "3": 360.536992,
-        "4": 362.158542
+        "0": 343.8009555,
+        "1": 335.81505749999997,
+        "2": 336.02558150000004,
+        "3": 332.96291099999996,
+        "4": 361.07358650000003
       },
       "median_by_image": {
-        "01.png": 512.789282,
-        "02.png": 267.192365,
-        "03.png": 386.325098,
-        "04.png": 163.144273,
-        "05.png": 346.116728,
-        "06.png": 454.400646,
-        "07.png": 537.979197,
-        "08.png": 241.372652,
-        "09.png": 503.836628,
-        "10.png": 375.244333,
-        "11.png": 165.069989,
-        "12.png": 380.620367,
-        "13.png": 207.870041,
-        "14.png": 359.53764,
-        "15.png": 275.787018,
-        "16.png": 406.043171,
-        "17.png": 164.832929,
-        "18.png": 512.220175,
-        "19.png": 579.161306,
-        "20.png": 202.032008
+        "01.png": 495.842838,
+        "02.png": 252.665821,
+        "03.png": 361.553785,
+        "04.png": 142.273351,
+        "05.png": 323.458492,
+        "06.png": 419.914221,
+        "07.png": 476.703623,
+        "08.png": 212.947482,
+        "09.png": 479.516675,
+        "10.png": 351.704673,
+        "11.png": 147.500546,
+        "12.png": 354.093676,
+        "13.png": 194.523164,
+        "14.png": 323.022763,
+        "15.png": 263.237002,
+        "16.png": 381.754869,
+        "17.png": 142.565199,
+        "18.png": 491.181582,
+        "19.png": 561.105335,
+        "20.png": 190.987744
       },
       "worst_image": {
         "name": "19.png",
-        "median_ms": 579.161306
+        "median_ms": 561.105335
       },
       "heavy_images": [
         "19.png",
-        "07.png",
         "01.png",
-        "18.png"
+        "18.png",
+        "09.png"
       ],
-      "heavy_median_ms": 525.3842394999999,
+      "heavy_median_ms": 493.51221,
       "budget_ms": 1000.0,
       "images_over_budget": [],
       "exact_match_rate": 0.3,
@@ -1054,700 +1054,700 @@
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 512.789282
+          "latency_ms": 587.84319
         },
         {
           "image": "02.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 274.712441
+          "latency_ms": 285.423699
         },
         {
           "image": "03.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 386.325098
+          "latency_ms": 356.006241
         },
         {
           "image": "04.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 163.144273
+          "latency_ms": 143.898566
         },
         {
           "image": "05.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 346.116728
+          "latency_ms": 335.897238
         },
         {
           "image": "06.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 471.449705
+          "latency_ms": 457.129207
         },
         {
           "image": "07.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 515.580174
+          "latency_ms": 473.808081
         },
         {
           "image": "08.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 244.192782
+          "latency_ms": 250.863526
         },
         {
           "image": "09.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 503.836628
+          "latency_ms": 505.463542
         },
         {
           "image": "10.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 377.750604
+          "latency_ms": 351.704673
         },
         {
           "image": "11.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 157.402261
+          "latency_ms": 146.850679
         },
         {
           "image": "12.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 365.275292
+          "latency_ms": 386.431986
         },
         {
           "image": "13.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 207.550842
+          "latency_ms": 201.277795
         },
         {
           "image": "14.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 362.595409
+          "latency_ms": 323.022763
         },
         {
           "image": "15.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 261.237041
+          "latency_ms": 265.704694
         },
         {
           "image": "16.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 403.457727
+          "latency_ms": 394.019784
         },
         {
           "image": "17.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 170.642601
+          "latency_ms": 141.951432
         },
         {
           "image": "18.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 512.574932
+          "latency_ms": 494.820481
         },
         {
           "image": "19.png",
           "trial": 0,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 593.337432
+          "latency_ms": 556.858278
         },
         {
           "image": "20.png",
           "trial": 0,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 201.174851
+          "latency_ms": 181.571931
         },
         {
           "image": "01.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 577.259959
+          "latency_ms": 495.842838
         },
         {
           "image": "02.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 256.575145
+          "latency_ms": 286.000687
         },
         {
           "image": "03.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 399.16468
+          "latency_ms": 361.553785
         },
         {
           "image": "04.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 164.996589
+          "latency_ms": 142.273351
         },
         {
           "image": "05.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 340.368866
+          "latency_ms": 327.451891
         },
         {
           "image": "06.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 454.400646
+          "latency_ms": 420.828339
         },
         {
           "image": "07.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 537.979197
+          "latency_ms": 475.989924
         },
         {
           "image": "08.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 245.549649
+          "latency_ms": 212.947482
         },
         {
           "image": "09.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 484.188248
+          "latency_ms": 481.02032
         },
         {
           "image": "10.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 379.448489
+          "latency_ms": 344.178224
         },
         {
           "image": "11.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 169.856655
+          "latency_ms": 160.45452
         },
         {
           "image": "12.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 360.498577
+          "latency_ms": 347.282176
         },
         {
           "image": "13.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 207.870041
+          "latency_ms": 194.523164
         },
         {
           "image": "14.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 376.735108
+          "latency_ms": 318.037108
         },
         {
           "image": "15.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 275.787018
+          "latency_ms": 255.952972
         },
         {
           "image": "16.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 411.019026
+          "latency_ms": 374.16114
         },
         {
           "image": "17.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 151.580339
+          "latency_ms": 137.868223
         },
         {
           "image": "18.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 483.446509
+          "latency_ms": 482.960965
         },
         {
           "image": "19.png",
           "trial": 1,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 579.647684
+          "latency_ms": 559.669859
         },
         {
           "image": "20.png",
           "trial": 1,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 208.19263
+          "latency_ms": 190.987744
         },
         {
           "image": "01.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 501.301477
+          "latency_ms": 487.793481
         },
         {
           "image": "02.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 249.628136
+          "latency_ms": 252.665821
         },
         {
           "image": "03.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 391.318315
+          "latency_ms": 373.084974
         },
         {
           "image": "04.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 161.627079
+          "latency_ms": 142.35634
         },
         {
           "image": "05.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 345.961319
+          "latency_ms": 319.716263
         },
         {
           "image": "06.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 460.15873
+          "latency_ms": 418.464366
         },
         {
           "image": "07.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 513.366781
+          "latency_ms": 483.416313
         },
         {
           "image": "08.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 223.226616
+          "latency_ms": 220.9341
         },
         {
           "image": "09.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 504.007289
+          "latency_ms": 478.362287
         },
         {
           "image": "10.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 355.387102
+          "latency_ms": 352.85184
         },
         {
           "image": "11.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 164.459601
+          "latency_ms": 147.500546
         },
         {
           "image": "12.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 400.897326
+          "latency_ms": 351.885932
         },
         {
           "image": "13.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 203.319614
+          "latency_ms": 189.830237
         },
         {
           "image": "14.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 359.53764
+          "latency_ms": 320.165231
         },
         {
           "image": "15.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 280.210346
+          "latency_ms": 263.237002
         },
         {
           "image": "16.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 406.043171
+          "latency_ms": 381.754869
         },
         {
           "image": "17.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 171.007531
+          "latency_ms": 154.901925
         },
         {
           "image": "18.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 512.220175
+          "latency_ms": 491.181582
         },
         {
           "image": "19.png",
           "trial": 2,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 577.781699
+          "latency_ms": 579.412904
         },
         {
           "image": "20.png",
           "trial": 2,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 202.032008
+          "latency_ms": 191.120903
         },
         {
           "image": "01.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 485.914803
+          "latency_ms": 488.3799
         },
         {
           "image": "02.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 267.192365
+          "latency_ms": 247.137496
         },
         {
           "image": "03.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 377.855296
+          "latency_ms": 352.157222
         },
         {
           "image": "04.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 170.854802
+          "latency_ms": 140.191117
         },
         {
           "image": "05.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 356.785508
+          "latency_ms": 318.882105
         },
         {
           "image": "06.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 446.65591
+          "latency_ms": 411.923814
         },
         {
           "image": "07.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 540.197362
+          "latency_ms": 476.703623
         },
         {
           "image": "08.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 241.372652
+          "latency_ms": 211.807986
         },
         {
           "image": "09.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 495.779684
+          "latency_ms": 479.070946
         },
         {
           "image": "10.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 364.288476
+          "latency_ms": 337.000424
         },
         {
           "image": "11.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 165.069989
+          "latency_ms": 139.645798
         },
         {
           "image": "12.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 401.247516
+          "latency_ms": 354.093676
         },
         {
           "image": "13.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 213.531524
+          "latency_ms": 192.769129
         },
         {
           "image": "14.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 353.447648
+          "latency_ms": 328.925398
         },
         {
           "image": "15.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 273.444996
+          "latency_ms": 255.983942
         },
         {
           "image": "16.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 395.178584
+          "latency_ms": 374.789808
         },
         {
           "image": "17.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 152.282207
+          "latency_ms": 142.565199
         },
         {
           "image": "18.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 528.390358
+          "latency_ms": 486.321486
         },
         {
           "image": "19.png",
           "trial": 3,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 579.161306
+          "latency_ms": 561.105335
         },
         {
           "image": "20.png",
           "trial": 3,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 209.497977
+          "latency_ms": 188.220812
         },
         {
           "image": "01.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 530.278842
+          "latency_ms": 503.865757
         },
         {
           "image": "02.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 273.304947
+          "latency_ms": 250.278478
         },
         {
           "image": "03.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 383.09787
+          "latency_ms": 362.286673
         },
         {
           "image": "04.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 161.536039
+          "latency_ms": 134.206253
         },
         {
           "image": "05.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 349.072751
+          "latency_ms": 323.458492
         },
         {
           "image": "06.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 425.328874
+          "latency_ms": 419.914221
         },
         {
           "image": "07.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 540.79276
+          "latency_ms": 488.47105
         },
         {
           "image": "08.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 233.365556
+          "latency_ms": 212.161975
         },
         {
           "image": "09.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 510.363371
+          "latency_ms": 479.516675
         },
         {
           "image": "10.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 375.244333
+          "latency_ms": 364.229148
         },
         {
           "image": "11.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 171.44407
+          "latency_ms": 154.698876
         },
         {
           "image": "12.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 380.620367
+          "latency_ms": 367.524278
         },
         {
           "image": "13.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 217.096314
+          "latency_ms": 210.002041
         },
         {
           "image": "14.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 345.887391
+          "latency_ms": 359.8605
         },
         {
           "image": "15.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 283.042428
+          "latency_ms": 263.480161
         },
         {
           "image": "16.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 437.803617
+          "latency_ms": 405.945341
         },
         {
           "image": "17.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 164.832929
+          "latency_ms": 187.630544
         },
         {
           "image": "18.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 503.568862
+          "latency_ms": 604.972693
         },
         {
           "image": "19.png",
           "trial": 4,
           "repetition": 0,
           "position": 1,
-          "latency_ms": 573.066965
+          "latency_ms": 619.624351
         },
         {
           "image": "20.png",
           "trial": 4,
           "repetition": 0,
           "position": 0,
-          "latency_ms": 198.582919
+          "latency_ms": 241.549762
         }
       ]
     }
@@ -1757,44 +1757,44 @@
       "base": "c",
       "other": "cpp",
       "requests": 100,
-      "median_delta_ms": -0.8132519999999914,
+      "median_delta_ms": -1.421111499999995,
       "median_delta_ci": [
-        -6.283721499999999,
-        2.6447520000000537
+        -2.434533000000016,
+        -0.016030000000014866
       ],
-      "other_faster": 53,
-      "base_faster": 47,
+      "other_faster": 60,
+      "base_faster": 40,
       "ties": 0,
-      "significant": false,
+      "significant": true,
       "median_delta_by_image": {
-        "01.png": 18.10635599999995,
-        "02.png": -17.062948999999975,
-        "03.png": -2.445502000000033,
-        "04.png": -3.5205100000000016,
-        "05.png": 2.452222000000006,
-        "06.png": 11.719134999999994,
-        "07.png": -10.520878999999923,
-        "08.png": 2.183593000000002,
-        "09.png": -3.355160000000012,
-        "10.png": -9.879519999999957,
-        "11.png": -0.7114380000000153,
-        "12.png": -6.302812000000017,
-        "13.png": -0.9226979999999969,
-        "14.png": 9.825711000000013,
-        "15.png": -7.889136000000008,
-        "16.png": 3.1100999999999885,
-        "17.png": 5.306874000000022,
-        "18.png": -3.7774879999999484,
-        "19.png": 0.64076799999998,
-        "20.png": -6.207312000000002
+        "01.png": 1.8542249999999854,
+        "02.png": -2.1873239999999896,
+        "03.png": -0.9212370000000192,
+        "04.png": -3.9404989999999884,
+        "05.png": -1.9068139999999971,
+        "06.png": 4.780625999999984,
+        "07.png": -5.994774000000007,
+        "08.png": -1.5892460000000028,
+        "09.png": -8.526005999999995,
+        "10.png": -13.759100999999987,
+        "11.png": -7.21100899999999,
+        "12.png": -8.139976999999988,
+        "13.png": -0.5511589999999842,
+        "14.png": -0.4983190000000377,
+        "15.png": 1.019498000000027,
+        "16.png": -1.1083869999999933,
+        "17.png": 2.305394000000007,
+        "18.png": -2.160903000000019,
+        "19.png": 11.775068000000033,
+        "20.png": 4.600557000000009
       },
       "heavy_images": [
         "01.png",
-        "07.png",
+        "09.png",
         "18.png",
         "19.png"
       ],
-      "heavy_median_delta_ms": -0.10354449999999815
+      "heavy_median_delta_ms": 1.3654914999999903
     }
   ]
 }

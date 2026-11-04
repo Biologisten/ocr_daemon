@@ -6,8 +6,8 @@ This is the record of the optimisation campaign on the two native OCR daemons
 progression of the recorded runs, and the levers that were measured and left
 alone.
 
-Scope throughout: the models (`PP-OCRv6_det_small` / `PP-OCRv6_rec_small` +
-direction classifier), the vendored ONNX Runtime **1.31.1**, and the pipeline
+Scope throughout: the models (`PP-OCRv6_det_small` / `PP-OCRv6_rec_small`), the
+vendored ONNX Runtime **1.31.1**, and the pipeline
 rules in `native/ASSUMPTIONS.md` B were fixed. Optimisation changed *how* the
 work is arranged, not what is read.
 
@@ -20,15 +20,15 @@ corpus, same models, same runtime, 5 trials / 100 timed requests per candidate:
 | --- | --- | --- | --- | --- | --- | --- |
 | first run, C | 441.3 ms | 945.3 ms | 19.png 1005 ms | 2/20 | 30% | 1.34% |
 | first run, C++ | 446.1 ms | 950.4 ms | 07.png 1045 ms | 2/20 | 30% | 1.34% |
-| **final, C** | **360.9 ms** | **529.0 ms** | **19.png 577 ms** | **0/20** | 30% | 1.34% |
-| **final, C++** | **361.5 ms** | **525.4 ms** | **19.png 579 ms** | **0/20** | 30% | 1.34% |
+| **final, C** | **341.7 ms** | **492.8 ms** | **19.png 551 ms** | **0/20** | 30% | 1.34% |
+| **final, C++** | **340.6 ms** | **493.5 ms** | **19.png 561 ms** | **0/20** | 30% | 1.34% |
 
 The tail moved further than the median: the worst image went from over the 1 s
-arrival interval to 58% of it, and the heavy-set median fell 44% while the corpus
-median fell 18%. Accuracy did not move in the net: the two changes that altered
-text cancelled (a +0.04-point canvas trade and a −0.04-point padding bug fix), so
-the first and final CER are both 1.34% and both cores still return byte-identical
-text on all 20 images.
+arrival interval to 55% of it, and the heavy-set median fell 48% while the corpus
+median fell 23%. Accuracy did not move in the net: the two changes that altered
+text cancelled (a +0.04-point canvas trade and a −0.04-point padding bug fix), and
+removing the direction classifier (§9) left every output byte-identical. Both
+cores still return byte-identical text on all 20 images.
 
 Absolute latency drifts ±15% between runs on this machine (load, background
 agents), so the first-vs-final comparison above is directional. Every individual
@@ -172,23 +172,25 @@ Reading each crop on its own width removed it, improving corpus CER 1.38% →
 **1.34%** — back to the level the canvas budget had cost. This one is unusual in
 being both faster and more accurate.
 
-### 6. The 180° classifier is a proposal, not a verdict
+### 6. The 180° classifier was a proposal, not a verdict
 
 Obeying the classifier on every crop was worse than not running it: on `07.png` it
 scores a thin Dutch line 180° at 0.99 confidence, and the recogniser then averages
 the rotated and upright boxes into `we slak`. That single line is the difference
 between ~1.3% and ~3.6% CER.
 
-Both cores now treat the verdict as a proposal that the recogniser arbitrates:
+Both cores therefore treated the verdict as a proposal that the recogniser
+arbitrates:
 
 1. propose a rotation only when the softmax is at least 0.9 for upside down;
 2. when it does, recognise the crop as-is *and* rotated, and keep the rotation
    only if that reading has strictly higher mean confidence.
 
 The recogniser reads glyphs; the classifier reads a 48×192 thumbnail, so the tie
-break goes to the recogniser. It costs one extra recognition on proposed lines
-only, recovers both Dutch lines on `07.png` byte-exactly, and still turns genuinely
-upside-down text upright.
+break goes to the recogniser. It cost one extra recognition on proposed lines only
+and helped on genuinely upside-down input, though it did not rescue a whole
+rotated page (§9). It was removed once the
+workload turned out to be upright desktop screenshots; §9 has that measurement.
 
 ### 7. Stop re-faulting the canvases and copying the outputs
 
@@ -201,8 +203,8 @@ against **7.4 ms** when the same buffer is reused, almost entirely page faults.
 
 Changes, in both cores:
 
-- the detector, recogniser and classifier NCHW canvases stay on the engine for the
-  process lifetime;
+- the detector and recogniser NCHW canvases stay on the engine for the process
+  lifetime;
 - their scaled 8-bit copies do too (the detector one is ~10 MB per request);
 - buffers grow only when a shape needs more, and only the right-hand pad columns
   are cleared, because the normalise writes every other element;
@@ -240,6 +242,33 @@ stays **off by default** behind `OCR_MEM_ARENA=1`.
   library, so `-march=native -flto` only speeds up our own preprocessing (~2.5 ms
   of a ~950 ms request).
 
+### 9. Dropping the 180° classifier
+
+The workload is upright desktop screenshots, and PP-OCRv6 det/rec carry no
+orientation stage of their own. The classifier had one job that never paid for
+itself on this corpus: it ran on all 101 crops, proposed a flip once (`07.png`),
+and the recogniser then rejected the rotated reading after the extra recognition
+had already been paid for.
+
+A build with the classifier removed — model not loaded, no proposal, no second
+recognition — was compared against the previous binaries, interleaved over 60
+paired requests per core:
+
+| core | median delta | 95% CI | heavy delta | text |
+| --- | --- | --- | --- | --- |
+| C | −15.2 ms | [−21.4, −10.5] | −38.7 ms | byte-identical |
+| C++ | −21.2 ms | [−25.3, −13.5] | −25.1 ms | byte-identical |
+
+The recorded 5-trial runs (08:41 → 06:56, the latter with the classifier gone)
+move C 360.9 → 341.7 ms median and 529.0 → 492.8 heavy; C++ 361.5 → 340.6 and
+525.4 → 493.5. Some of that is the usual drift; the paired A/B above is the
+attribution. Removing the model also takes ~0.5 MiB RSS and ~60 ms of C++ startup.
+
+The cost is confined to upside-down input. Feeding all 20 screenshots rotated
+180°: the classifier build scored 72.84% CER (1 exact), the no-classifier build
+82.95% (0 exact). That is a real regression on a case this workload never sees;
+upright text is identical.
+
 ## The recorded progression
 
 `benchmarks/history.jsonl`, in order. Median, heavy median and worst image per
@@ -253,6 +282,7 @@ candidate:
 | 06:55 | 415.7 | 595.8 | 19.png 665 | 420.0 | 600.4 | 19.png 668 | 0/20 |
 | 08:05 | 371.8 | 543.9 | 19.png 587 | 381.5 | 538.7 | 19.png 606 | 0/20 |
 | 08:41 | 360.9 | 529.0 | 19.png 577 | 361.5 | 525.4 | 19.png 579 | 0/20 |
+| 06:56 | 341.7 | 492.8 | 19.png 551 | 340.6 | 493.5 | 19.png 561 | 0/20 |
 
 Two caveats for reading the series:
 
@@ -263,11 +293,13 @@ Two caveats for reading the series:
   attributable to individual changes. The reliable per-change numbers are the
   paired A/Bs quoted above.
 
-The last two runs bracket the memory work: 08:05 is the recorded baseline and
-08:41 is after it. Those runs moved the worst image 587/606 → **577/579 ms**, the
-heavy median 544/539 → **529/525 ms** and the corpus median 372/382 →
-**361/362 ms**; CPU is 2.29 s per request on the final build. Part of that is
-drift — the change's own paired measurement is in Appendix B.
+The 08:05 → 08:41 pair brackets the memory work: 08:05 is the recorded baseline
+and 08:41 is after it. Those two runs moved the worst image 587/606 → **577/579 ms**,
+the heavy median 544/539 → **529/525 ms** and the corpus median 372/382 →
+**361/362 ms**; CPU is 2.07 s per request on the final build. The last row (06:56)
+adds the classifier removal (§9): worst 577/579 → **551/561 ms**, heavy 529/525 →
+**493/494 ms**, median 361/362 → **342/341 ms**. Part of that is drift — each
+change's own paired measurement is in Appendix B and §9.
 
 ## Measured and rejected
 
@@ -298,17 +330,17 @@ memory handling, which was removed last.
 
 The shape split still matters for any future work:
 
-| image | detector | crops + cls | recognition | wall | lines |
+| image | detector | crops | recognition | wall | lines |
 | --- | --- | --- | --- | --- | --- |
-| `01.png` | 491 ms | 6 ms | 27 ms | 524 ms | 2 |
-| `18.png` | 508 ms | 3 ms | 17 ms | 528 ms | 2 |
-| `19.png` | 486 ms | 5 ms | 106 ms | 598 ms | 3 |
-| `06.png` | 286 ms | 9 ms | 174 ms | 470 ms | 7 |
-| `07.png` | 177 ms | 16 ms | 331 ms | 526 ms | 12 |
-| `13.png` | 181 ms | 4 ms | 37 ms | 222 ms | 3 |
+| `01.png` | 459 ms | 4 ms | 21 ms | 486 ms | 2 |
+| `18.png` | 481 ms | 1 ms | 12 ms | 492 ms | 2 |
+| `19.png` | 462 ms | 2 ms | 87 ms | 552 ms | 3 |
+| `06.png` | 263 ms | 3 ms | 155 ms | 426 ms | 7 |
+| `07.png` | 157 ms | 6 ms | 304 ms | 469 ms | 12 |
+| `13.png` | 164 ms | 1 ms | 29 ms | 192 ms | 3 |
 
 Strip screenshots are detector-bound; the multi-line ones are recognition-bound.
-`19.png` is the worst remaining image at 81% detector, and its cost is the model on
+`19.png` is the worst remaining image at 84% detector, and its cost is the model on
 a 2.9 Mpx canvas, not overhead around it.
 
 ## What the campaign taught

@@ -4,7 +4,8 @@ Two independent OCR daemons — one C11, one C++ — that answer `POST` with an
 encoded screenshot and reply with the recognised text, plus the harness that
 measures them on a fixed 20-image screenshots corpus.
 
-Both link the same ONNX Runtime (1.31.1, vendored in `native/lib/`) and the same
+Both link the same ONNX Runtime (the system one when it is 1.30 or newer,
+otherwise the vendored 1.31.1) and the same
 PP-OCRv6 models, so the benchmark compares two implementations and the two ways
 they call that runtime, not two different OCR models.
 
@@ -21,7 +22,7 @@ they call that runtime, not two different OCR models.
 | `WRITEUP.md` | the optimisation record: what changed, what it bought, and what was rejected |
 | `native/smoke.cpp` | asserts a white PNG comes back as empty text |
 | `native/lib/` | vendored ONNX Runtime 1.31.1 (see `native/lib/NOTICE.md`, MIT) |
-| `models/` | PP-OCRv6 det/rec + direction classifier, with `manifest.json` hashes |
+| `models/` | PP-OCRv6 det/rec models, with `manifest.json` hashes |
 | `corpus/` | 20 screenshots and their ground truth (`manifest.json`) |
 | `benchmarks/run.py` | the harness (Python standard library only) |
 | `benchmarks/check_cores.py` | byte-compares both cores on the corpus, for gating core work |
@@ -35,9 +36,10 @@ they call that runtime, not two different OCR models.
 Arch Linux packages providing `opencv5` headers/libraries
 (`/usr/include/opencv5`), `libpng`, `libjpeg`, a C11 compiler, `g++`, and
 `python3`. ONNX Runtime *headers* come from the system package
-(`/usr/include/onnxruntime`); the *library* is the vendored 1.31.1, because the
-distribution ships only 1.29 (see “Which ONNX Runtime”). The 1.29 headers compile
-against 1.31.1 because the ONNX Runtime C API is backwards compatible.
+(`/usr/include/onnxruntime`); the *library* is the system one when it is 1.30 or
+newer, and the vendored 1.31.1 only when the system copy is older or missing (see
+“Which ONNX Runtime”). The 1.29 headers compile against both because the ONNX
+Runtime C API is backwards compatible.
 
 ## Build
 
@@ -48,15 +50,17 @@ OCR_DEBUG=1 OCR_MODEL_DIR=models ./native/cpp-ocr-daemon   # per-request stage t
 ```
 
 Two environment variables tune the runtime without a rebuild: `OCR_DEBUG` prints
-the ms spent in decode, detector, crops+classifier and recognition per request
-(with the detector canvas size, box coordinates and classifier scores), and
+the ms spent in decode, detector, crops and recognition per request
+(with the detector canvas size and box coordinates), and
 `OCR_THREADS` overrides the intra-op pool size that is otherwise derived from the
 physical core count.
 
-The Makefile links `native/lib/libonnxruntime.so.1.31.1` with
-`-Wl,-rpath,'$ORIGIN/lib'` and falls back to the system `-lonnxruntime` when the
-vendored file is absent, so a checkout without `native/lib/` still builds.
-`ldd native/cpp-ocr-daemon | grep onnx` shows which one a binary resolved.
+The Makefile asks `ldconfig` for the installed ONNX Runtime and links the system
+library with `-lonnxruntime` when it is 1.30 or newer. Otherwise it links
+`native/lib/libonnxruntime.so.1.31.1` with `-Wl,-rpath,'$ORIGIN/lib'`, falling
+back to the system library if the vendored file is absent too, so a checkout
+without `native/lib/` still builds. `ldd native/cpp-ocr-daemon | grep onnx`
+shows which one a binary resolved.
 
 ## Install as a daemon
 
@@ -65,14 +69,16 @@ vendored file is absent, so a checkout without `native/lib/` still builds.
 
 ```
 ocr-daemon                     the binary
-lib/libonnxruntime.so.1.31.1   vendored runtime
-lib/libonnxruntime.so.1        symlink the binary resolves
-models/*.onnx                  det, rec and classifier
+models/*.onnx                  det and rec models
+lib/libonnxruntime.so.1.31.1   vendored runtime (only when the build fell back to it)
+lib/libonnxruntime.so.1        symlink the binary resolves (same case)
 ```
 
-The binary's `$ORIGIN/lib` RUNPATH makes the vendored runtime win over the
-system 1.29 wherever the tree is moved, so the service needs no
-`LD_LIBRARY_PATH`. A user unit is then:
+When the build fell back to the vendored runtime, the binary's `$ORIGIN/lib`
+RUNPATH makes it win over the system copy wherever the tree is moved, so the
+service needs no `LD_LIBRARY_PATH`. When it linked the system library, the
+service needs a system ONNX Runtime 1.30 or newer at run time. A user unit is
+then:
 
 ```ini
 [Service]
@@ -159,44 +165,45 @@ exit 0, ~230 s (run of record: `benchmarks/history.jsonl`):
 
 | candidate | median | 95% CI (median) | p90 | p95 | p99 | worst image | heavy | empty | cpu/req | startup | RSS | exact | CER |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| c | 360.9 ms | [253.4, 424.3] | 529.2 ms | 553.2 ms | 580.6 ms | 19.png 577 ms | 529.0 ms | 0.2 ms | 2286 ms | 459 ms | 222–315 MiB | 30% | 1.34% |
-| cpp | 361.5 ms | [254.3, 430.2] | 528.6 ms | 573.3 ms | 579.8 ms | 19.png 579 ms | 525.4 ms | 0.2 ms | 2284 ms | 477 ms | 208–212 MiB | 30% | 1.34% |
+| c | 341.7 ms | [237.2, 398.3] | 494.7 ms | 545.2 ms | 567.8 ms | 19.png 551 ms | 492.8 ms | 0.1 ms | 2070 ms | 394 ms | 237–332 MiB | 30% | 1.34% |
+| cpp | 340.6 ms | [232.8, 400.8] | 494.9 ms | 559.7 ms | 605.1 ms | 19.png 561 ms | 493.5 ms | 0.2 ms | 2046 ms | 407 ms | 211 MiB | 30% | 1.34% |
 
 The tail is the number that matters for this workload, and it now has room in it:
-**0 of 20 images are above the 1 s arrival interval**, and the worst is at 58% of it
-rather than 95%. Before the work described below the worst were `07.png` 949/979 ms
-(95%/98%) with two images over budget; the top of the corpus is now `19.png`
-577/579 ms, `07.png` 546/538 ms, `01.png` 512/513 ms, `18.png` 507/512 ms,
-`09.png` 499/504 ms and `06.png` 445/454 ms. This round alone (buffer reuse, below)
-moved the worst image 587/606 → **577/579 ms**, the heavy-set median 544/539 →
-**529/525 ms** and the corpus median 372/382 → **361/362 ms**; p90 is 529/529 ms
-against 553/573 before, so the whole distribution moved rather than a single image.
+**0 of 20 images are above the 1 s arrival interval**, and the worst is at 55/56% of
+it rather than 95%. Before the work described below the worst were `07.png`
+949/979 ms (95%/98%) with two images over budget; the top of the corpus is now
+`19.png` 551/561 ms, `18.png` 494/491 ms, `01.png` 491/496 ms, `09.png` 490/480 ms,
+`07.png` 483/477 ms and `06.png` 416/420 ms. The last two rounds moved the corpus
+median 372/382 → **361/362 → 342/341 ms**, the heavy-set median 544/539 →
+**529/525 → 493/494 ms** and the worst image 587/606 → **577/579 → 551/561 ms**;
+p90 is 495/495 ms against 553/573 before, so the whole distribution moved rather
+than a single image.
 
-The tail moved shape as well as down. `07.png` — twelve long lines and 63%
+The tail moved shape as well as down. `07.png` — twelve long lines and 65%
 recogniser — is no longer the worst image, because recognition is now read one crop
 per run at 24 ms per crop instead of 41 ms in a batch of six; the worst image is
-`19.png`, which is 81% detector. That is where the next 100 ms would come from, and
+`19.png`, which is 84% detector. That is where the next 100 ms would come from, and
 `07.png` keeps a 45% margin instead of the 2–5% it had.
 
 These numbers were collected with the machine at load ~6 (browser and agent), and
 absolute latency drifts ±15% between runs, so read the ranking and the paired
-deltas rather than the third digit. The change behind this run is in our own memory
-handling, not the runtime: the cores now keep their three NCHW canvases and the
-scaled 8-bit copies between requests, and decode the runtime's output tensor in
-place instead of copying it. That drops minor faults per `19.png` request from
-153,636 to 133,856, and it is worth 21 ms on `19.png`, 20 on `18.png`, 18 on
-`09.png`, 9 on `07.png` and 5 on `01.png` in an interleaved A/B — a freshly
-allocated 35 MB canvas costs 28.4 ms to touch against 7.4 ms reused, almost all of
-it page faults. ONNX Runtime's own CPU arena is a larger trade and stays off by
-default: re-measured on this build it is worth ~19 ms (C) and ~15 ms (C++) of
-corpus median and ~27–29 ms of the heavy set, but it pins ~1.16 GiB of cached
-activations (RSS 208–315 MiB → ~1.2 GiB). `OCR_MEM_ARENA=1` turns it on.
+deltas rather than the third digit. The recent changes are in our own code, not the
+runtime: the cores keep their two NCHW canvases and the scaled 8-bit copies between
+requests, decode the runtime's output tensor in place instead of copying it, and no
+longer run the 180° classifier (`WRITEUP.md` §9). Buffer reuse drops minor faults
+per `19.png` request from 153,636 to 133,856, and it is worth 21 ms on `19.png`,
+20 on `18.png`, 18 on `09.png`, 9 on `07.png` and 5 on `01.png` in an interleaved
+A/B — a freshly allocated 35 MB canvas costs 28.4 ms to touch against 7.4 ms reused,
+almost all of it page faults. ONNX Runtime's own CPU arena is a larger trade and
+stays off by default: re-measured on this build it is worth ~19 ms (C) and ~15 ms
+(C++) of corpus median and ~27–29 ms of the heavy set, but it pins ~1.16 GiB of
+cached activations (RSS 208–315 MiB → ~1.2 GiB). `OCR_MEM_ARENA=1` turns it on.
 
-`cpp - c` = **−0.8 ms [−6.3, +2.6]** over 100 paired requests — inside noise, as in
-every previous run (+4.9, +9.6 significant, +3.1, +6.4 and +1.3 ms inside noise),
-so the cores are equivalent in latency at this harness's resolution. C++ keeps
-100 MiB less resident (208–212 vs 222–315 MiB) because `std::vector` grow-only
-buffers and `cv::Mat` allocation round differently from `realloc`.
+`cpp - c` = **−1.4 ms [−2.4, −0.0]** over 100 paired requests — technically outside
+zero but a rounding error at this harness's resolution; earlier runs had it on both
+sides of zero. C++ keeps ~25–120 MiB less resident (211 vs 237–332 MiB) because
+`std::vector` grow-only buffers and `cv::Mat` allocation round differently from
+`realloc`.
 
 Absolute latency drifts between runs — the same binaries measured 383, 441, 442,
 416 and 361 ms medians — so only within-run paired deltas are comparable, and the
@@ -214,10 +221,10 @@ A request is the OCR core, essentially entirely:
 | part | cost | share |
 | --- | --- | --- |
 | HTTP frontend (accept, read, answer, reject) | 0.1–0.2 ms | ~0.05% |
-| OCR core (decode, detect, crop, classify, recognise) | ~361 ms | ~99.9% |
+| OCR core (decode, detect, crop, recognise) | ~342 ms | ~99.9% |
 
-CPU agrees from the other side: 2.29 s of CPU per request against 361 ms of wall
-clock, i.e. the core runs ~6.3 threads wide — which is the intra-op pool described
+CPU agrees from the other side: 2.07 s of CPU per request against 342 ms of wall
+clock, i.e. the core runs ~6.1 threads wide — which is the intra-op pool described
 below, so the CPU-time number moved with it rather than staying at the old ~7.
 
 A root `operf` profile says where those cycles are: **87–94% inside ONNX Runtime**,
@@ -232,14 +239,14 @@ Percentages only, because the sampler throttled and dropped samples.
 Inside the core the split depends on the image's shape, and there are two regimes
 rather than one ratio (`OCR_DEBUG=1` prints these stages per request):
 
-| image | detector | crops + classifier | recognition | wall | lines |
+| image | detector | crops | recognition | wall | lines |
 | --- | --- | --- | --- | --- | --- |
-| `01.png` | 491 ms | 6 ms | 27 ms | 524 ms | 2 |
-| `18.png` | 508 ms | 3 ms | 17 ms | 528 ms | 2 |
-| `19.png` | 486 ms | 5 ms | 106 ms | 598 ms | 3 |
-| `06.png` | 286 ms | 9 ms | 174 ms | 470 ms | 7 |
-| `07.png` | 177 ms | 16 ms | 331 ms | 526 ms | 12 |
-| `13.png` | 181 ms | 4 ms | 37 ms | 222 ms | 3 |
+| `01.png` | 459 ms | 4 ms | 21 ms | 486 ms | 2 |
+| `18.png` | 481 ms | 1 ms | 12 ms | 492 ms | 2 |
+| `19.png` | 462 ms | 2 ms | 87 ms | 552 ms | 3 |
+| `06.png` | 263 ms | 3 ms | 155 ms | 426 ms | 7 |
+| `07.png` | 157 ms | 6 ms | 304 ms | 469 ms | 12 |
+| `13.png` | 164 ms | 1 ms | 29 ms | 192 ms | 3 |
 
 **Strip screenshots are detector-bound; the multi-line ones are recognition-bound.**
 Detection cost follows the detector canvas: the rule scales the short side to
@@ -345,7 +352,7 @@ batches concurrently was worth ~3%, inside noise.
 
 ## How the cores relate
 
-The two cores decode, detect, crop, classify, recognise and assemble text
+The two cores decode, detect, crop, recognise and assemble text
 independently, but share one implementation of the **crop geometry**
 (`native/ocr_geometry.{c,h}`): OpenCV-compatible 11-bit fixed-point bilinear
 resize, 2x2 dilation at anchor (0,0), 8-connected foreground and 4-connected hole
@@ -365,29 +372,21 @@ source row into a two-entry cache instead of once per output row, which halves
 to a straightforward transcription of the documented algorithm, so the speedup
 cannot move a pixel.
 
-## How the 180-degree classifier is applied
+## No 180-degree classifier
 
-Obeying the classifier on every crop is worse than not running it: on `07.png` it
-scores a thin Dutch line 180 degrees at 0.99 confidence, and the recogniser then
-averages the rotated and upright boxes into `we           slak`. That single line
-is the difference between ~1.3% and ~3.6% CER.
-
-Both cores therefore treat the verdict as a **proposal** that the recogniser
-arbitrates:
-
-1. it proposes a rotation only when its softmax is at least 0.9 for upside down;
-2. when it does, the crop is recognised both as-is and rotated, and the rotation
-   is kept only if that reading has strictly higher mean confidence.
-
-The recogniser reads glyphs, the classifier reads a 48x192 thumbnail, so the tie
-break goes to the recogniser. It costs one extra recognition on proposed lines
-only, recovers both Dutch lines on `07.png` (byte-exact against ground truth), and
-still turns genuinely upside-down text upright.
+The two PP-OCRv6 models read text as-is and do not classify orientation. Earlier
+builds ran RapidOCR's separate 180° classifier on every crop and re-recognised the
+ones it proposed flipping. Desktop screenshots are upright and the classifier
+changed no corpus output, so it was removed: text stays byte-identical on all 20
+images while the median drops 15–21 ms. The measurements and the cost on a
+genuinely upside-down image are in
+[`WRITEUP.md`](WRITEUP.md#9-dropping-the-180-classifier).
 
 ## Which ONNX Runtime
 
-1.31.1 is vendored because the distribution packages 1.29, which is ~20% slower
-here (recognition at `6x3x48x1568`, 6 threads: 307 ms on 1.29 vs 229 ms on 1.31).
+1.31.1 is vendored for systems that still ship 1.29 or older, which is ~20%
+slower here (recognition at `6x3x48x1568`, 6 threads: 307 ms on 1.29 vs 229 ms on
+1.31).
 The gain arrived with **1.30**, not 1.31 — measured at core level with paired,
 order-alternating runs:
 
@@ -395,7 +394,7 @@ order-alternating runs:
 | --- | --- | --- |
 | 1.29 (system) | +82.3 ms, +20.5%, CI [+60.1, +102.3] | significant |
 | 1.30.1 | +1.1 ms, CI [−8.1, +8.7] | inside noise |
-| 1.31.1 (vendored, default) | baseline | — |
+| 1.31.1 (vendored fallback) | baseline | — |
 
 1.30.1 was measured with its own official release build and then removed from the
 workspace once it was shown equivalent; to repeat that, drop its library in a
@@ -451,7 +450,7 @@ multi-line screenshot (`07.png`), for two different reasons. See
 ## Provenance
 
 `native/lib/` holds the CPU `libonnxruntime.so.1.31.1` from the
-`onnxruntime==1.31.1` wheel (MIT, see `native/lib/NOTICE.md`). `models/` holds the three
+`onnxruntime==1.31.1` wheel (MIT, see `native/lib/NOTICE.md`). `models/` holds the two
 RapidOCR 3.10.0 assets with their SHA-256 in `models/manifest.json`; run
 `python3 tools/model_manifest.py` after replacing one. `corpus/` documents how its
 screenshots were transcribed. No Python daemon is part of the benchmark any more:

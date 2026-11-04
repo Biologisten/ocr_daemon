@@ -102,17 +102,6 @@ static int image_rotate_90_ccw(const Image *src, Image *dst) {
   return 0;
 }
 
-static int image_rotate_180(const Image *src, Image *dst) {
-  if (image_create(dst, src->rows, src->cols) != 0) return -1;
-  for (int y = 0; y < src->rows; ++y) {
-    for (int x = 0; x < src->cols; ++x) {
-      unsigned char *out = dst->data + ((size_t)(src->rows - 1 - y) * dst->cols + (src->cols - 1 - x)) * 3;
-      memcpy(out, src->data + ((size_t)y * src->cols + x) * 3, 3);
-    }
-  }
-  return 0;
-}
-
 // -------------------------------------------------------------------- decoding
 
 typedef struct {
@@ -426,30 +415,27 @@ static int warp_cubic(const Image *src, Image *dst, const double matrix[9], int 
 // ------------------------------------------------------------------ OCR engine
 
 typedef struct {
-  Session det, rec, cls;
+  Session det, rec;
   char **characters;
   size_t character_count;
-  float *det_input, *rec_input, *cls_input;
-  size_t det_capacity, rec_capacity, cls_capacity;
+  float *det_input, *rec_input;
+  size_t det_capacity, rec_capacity;
   // The scaled 8-bit copies the canvases are built from, also kept between
   // requests: the detector one is ~10 MB and was a fresh malloc per request.
-  unsigned char *det_scaled, *rec_scaled, *cls_scaled;
-  size_t det_scaled_capacity, rec_scaled_capacity, cls_scaled_capacity;
+  unsigned char *det_scaled, *rec_scaled;
+  size_t det_scaled_capacity, rec_scaled_capacity;
 } Engine;
 
 static void engine_free(Engine *engine) {
   if (!engine) return;
   session_free(&engine->det);
   session_free(&engine->rec);
-  session_free(&engine->cls);
   for (size_t i = 0; i < engine->character_count; ++i) free(engine->characters[i]);
   free(engine->characters);
   free(engine->det_input);
   free(engine->rec_input);
-  free(engine->cls_input);
   free(engine->det_scaled);
   free(engine->rec_scaled);
-  free(engine->cls_scaled);
   free(engine);
 }
 
@@ -614,22 +600,6 @@ static int crop_box(const Image *image, const Box *box, Image *out) {
   return 0;
 }
 
-// Sets *rotate when the direction classifier is at least 90% sure the crop is
-// upside down. That is a proposal only; the recogniser arbitrates it below.
-static int proposes_rotation(Engine *engine, const Image *image, int *rotate) {
-  int width = (int)ceil(48.0 * image->cols / image->rows);
-  if (width > 192) width = 192;
-  if (width < 1) width = 1;
-  if (fill_nchw(&engine->cls_input, &engine->cls_capacity, &engine->cls_scaled,
-                &engine->cls_scaled_capacity, image, 48, 192, width) != 0) return -1;
-  const int64_t shape[4] = {1, 3, 48, 192};
-  Tensor output;
-  if (session_run(&engine->cls, engine->cls_input, (size_t)3 * 48 * 192, shape, 4, &output) != 0) return -1;
-  *rotate = output.data && output.dim_count == 2 && output.dims[1] >= 2 && output.data[1] > .9f && output.data[1] > output.data[0];
-  tensor_free(&output);
-  return 0;
-}
-
 typedef struct {
   char *text;
   float score;
@@ -728,31 +698,16 @@ static char *engine_run(Engine *engine, const unsigned char *data, size_t size) 
     snprintf(g_error, sizeof g_error, "out of memory");
     return NULL;
   }
-  int *proposed = calloc(box_count ? box_count : 1, sizeof(int));
-  if (!proposed) {
-    free(boxes);
-    image_free(&image);
-    free(crops);
-    snprintf(g_error, sizeof g_error, "out of memory");
-    return NULL;
-  }
   for (size_t i = 0; i < box_count; ++i) {
     Image cropped;
     const int status = crop_box(&image, &boxes[i], &cropped);
     if (status < 0) {
-      free(proposed);
       free(boxes);
       image_free(&image);
       free(crops);
       return NULL;
     }
     if (status > 0) continue;
-    int rotate = 0;
-    if (proposes_rotation(engine, &cropped, &rotate) != 0) {
-      image_free(&cropped);
-      continue;
-    }
-    proposed[crop_count] = rotate;
     crops[crop_count++] = cropped;
   }
   free(boxes);
@@ -764,29 +719,6 @@ static char *engine_run(Engine *engine, const unsigned char *data, size_t size) 
     free(crops);
     return NULL;
   }
-  // The 180-degree classifier is confident far more often than it is right on
-  // very wide crops, so its verdict is a proposal: recognise the rotated crop
-  // and keep the reading the recogniser scores higher. Skipping this lost whole
-  // lines to a 0.99-confidence false positive.
-  for (size_t i = 0; i < crop_count; ++i) {
-    if (!proposed[i]) continue;
-    Image turned;
-    if (image_rotate_180(&crops[i], &turned) != 0) continue;
-    Line *alternative = NULL;
-    if (recognize(engine, &turned, 1, &alternative) != 0) {
-      image_free(&turned);
-      continue;
-    }
-    image_free(&turned);
-    if (alternative[0].score > lines[i].score) {
-      free(lines[i].text);
-      lines[i] = alternative[0];
-      alternative[0].text = NULL;
-    }
-    free(alternative[0].text);
-    free(alternative);
-  }
-  free(proposed);
   for (size_t i = 0; i < crop_count; ++i) image_free(&crops[i]);
   free(crops);
 
@@ -846,8 +778,6 @@ void *ocr_create(const char *model_dir, char **error) {
   if (session_create(&engine->det, path) != 0) goto failed;
   snprintf(path, sizeof path, "%s/PP-OCRv6_rec_small.onnx", model_dir);
   if (session_create(&engine->rec, path) != 0) goto failed;
-  snprintf(path, sizeof path, "%s/ch_ppocr_mobile_v2.0_cls_mobile.onnx", model_dir);
-  if (session_create(&engine->cls, path) != 0) goto failed;
   if (load_characters(engine) != 0) goto failed;
   return engine;
 

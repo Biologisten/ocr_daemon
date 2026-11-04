@@ -3,18 +3,31 @@ CXXFLAGS := -O3 -std=c++20 -Wall -Wextra -I/usr/include/opencv5 -I/usr/include/o
 CFLAGS := -O3 -std=c11 -Wall -Wextra
 OPENCV_LIBS := -lopencv_imgcodecs -lopencv_imgproc -lopencv_geometry -lopencv_core
 
-# Use the vendored ONNX Runtime (see lib/NOTICE.md) when it is present; fall back
-# to the system library otherwise so a fresh checkout still builds.
+# Link the system ONNX Runtime when it is 1.30 or newer; otherwise fall back to
+# the vendored 1.31.1 (see lib/NOTICE.md), or to the system library when there
+# is no vendored copy so a fresh checkout still builds.
 ORT_VERSION := 1.31.1
+ORT_MIN_VERSION := 1.30
 ORT_DIR := lib
 ORT_LIB := $(ORT_DIR)/libonnxruntime.so.$(ORT_VERSION)
 
-ifeq ($(wildcard $(ORT_LIB)),)
+SYS_ORT_PATH := $(shell ldconfig -p 2>/dev/null | awk '/libonnxruntime\.so\.1 / {print $$NF; exit}')
+SYS_ORT_VERSION := $(shell [ -n "$(SYS_ORT_PATH)" ] && basename "$$(readlink -f "$(SYS_ORT_PATH)")" | sed -E 's/^libonnxruntime\.so\.//')
+SYS_ORT_OK := $(shell [ -n "$(SYS_ORT_VERSION)" ] && \
+  [ "$$(printf '%s\n%s\n' $(ORT_MIN_VERSION) $(SYS_ORT_VERSION) | sort -V | head -n1)" = "$(ORT_MIN_VERSION)" ] && echo yes)
+
+ifeq ($(SYS_ORT_OK),yes)
   ORT_CXX := -lonnxruntime
-  ORT_NAME := system ONNX Runtime
-else
+  ORT_NAME := system ONNX Runtime $(SYS_ORT_VERSION)
+  ORT_VENDORED := no
+else ifneq ($(wildcard $(ORT_LIB)),)
   ORT_CXX := -L$(ORT_DIR) -l:libonnxruntime.so.$(ORT_VERSION) -Wl,-rpath,'$$ORIGIN/$(ORT_DIR)'
   ORT_NAME := vendored ONNX Runtime $(ORT_VERSION)
+  ORT_VENDORED := yes
+else
+  ORT_CXX := -lonnxruntime
+  ORT_NAME := system ONNX Runtime
+  ORT_VENDORED := no
 endif
 
 LDLIBS := $(OPENCV_LIBS) -lpthread
@@ -60,8 +73,10 @@ PREFIX ?= $(HOME)/.local/lib/ocr-daemon
 install: cpp-ocr-daemon
 	mkdir -p $(PREFIX)/lib $(PREFIX)/models
 	install -m755 cpp-ocr-daemon $(PREFIX)/ocr-daemon
+ifeq ($(ORT_VENDORED),yes)
 	install -m755 $(ORT_LIB) $(PREFIX)/lib/
 	ln -sf libonnxruntime.so.$(ORT_VERSION) $(PREFIX)/lib/libonnxruntime.so.1
+endif
 	install -m644 ../models/*.onnx $(PREFIX)/models/
 
 clean:

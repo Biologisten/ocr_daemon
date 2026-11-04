@@ -10,7 +10,6 @@ MODEL_DIR = ROOT / "models"
 NAMES = (
     "PP-OCRv6_det_small.onnx",
     "PP-OCRv6_rec_small.onnx",
-    "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
 )
 
 

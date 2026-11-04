@@ -86,7 +86,6 @@ recognised text if altered. **[code]**
 | detection mask | probability `> 0.3`, then 2x2 dilation, anchor (0,0) |
 | box filter | min-area-rect short side `>= 3`, mean probability `>= 0.5`, grow by `area * 1.6 / perimeter` per side, short side `>= 5` after growth, edges `> 3` px |
 | crop | warp to integer `WxH` with bicubic + border replicate; rotate 90° CCW when `h/w >= 1.5` |
-| classifier | 48x192 canvas, width `min(192, ceil(48 * aspect))`, proposes a 180° rotation iff `p(flip) > 0.9` |
 | recognition | 48 px high, **one crop per session run**, canvas width `max(320, 48 * aspect)` of that crop alone (no sibling padding), CTC greedy decode with repeat suppression |
 | output | drop whitespace-only or mean-confidence `< 0.5` lines, join the rest with `\n` |
 
@@ -114,7 +113,7 @@ crop by a pixel and changes the text.
 ## D. Runtime and model
 
 - **D1. Both cores use the same runtime and models. [code]** `native/lib/` ONNX
-  Runtime 1.31.1, the three `models/` assets, `ORT_ENABLE_ALL`.
+  Runtime 1.31.1, the two `models/` assets, `ORT_ENABLE_ALL`.
 - **D2. The CPU memory arena is off by default, opt-in with `OCR_MEM_ARENA`. [code] [measured]**
   `DisableCpuMemArena()` in each core unless that variable is set, so a shipped
   `Run` allocates and frees through the default allocator. With one crop per run
@@ -171,18 +170,18 @@ the tail of each run.
 The stage split is what tells you which lever applies, and it differs by image
 shape (`OCR_DEBUG`, medians of five requests, current build): **[measured]**
 
-| image | detector | crops + classifier | recognition | wall | lines |
+| image | detector | crops | recognition | wall | lines |
 | --- | --- | --- | --- | --- | --- |
-| 01.png | 491 | 6 | 27 | 524 | 2 |
-| 18.png | 508 | 3 | 17 | 528 | 2 |
-| 19.png | 486 | 5 | 106 | 598 | 3 |
-| 06.png | 286 | 9 | 174 | 470 | 7 |
-| 07.png | 177 | 16 | 331 | 526 | 12 |
-| 13.png | 181 | 4 | 37 | 222 | 3 |
+| 01.png | 459 | 4 | 21 | 486 | 2 |
+| 18.png | 481 | 1 | 12 | 492 | 2 |
+| 19.png | 462 | 2 | 87 | 552 | 3 |
+| 06.png | 263 | 3 | 155 | 426 | 7 |
+| 07.png | 157 | 6 | 304 | 469 | 12 |
+| 13.png | 164 | 1 | 29 | 192 | 3 |
 
 So **the strip screenshots are detector-bound and the multi-line ones are
-recognition-bound**: `07.png` was 74% recogniser before B changed and is 63% now,
-`19.png` 81% detector. Neither a canvas change nor a recognition change fixes both,
+recognition-bound**: `07.png` was 74% recogniser before B changed and is 65% now,
+`19.png` 84% detector. Neither a canvas change nor a recognition change fixes both,
 and the corpus-wide "detection 71% / recognition 29%" this section used to quote
 (blank images at corpus dimensions) averaged those two regimes away.
 
@@ -258,7 +257,7 @@ took **153,636 minor faults**, ~600 MB of pages touched, and a single detector `
 accounted for ~114k of them. Splitting that between the runtime and our buffers
 isolated the removable part — a freshly `malloc`ed 35 MB detector canvas costs
 **28.4 ms** to touch against **7.4 ms** when the same buffer is reused, almost all
-of it page faults. Both cores now keep the detector, recogniser and classifier
+of it page faults. Both cores now keep the detector and recogniser
 canvases and their scaled 8-bit copies on the engine for the life of the process,
 grow them only when a shape needs more, and clear only the pad columns (the
 normalise writes every other element). They also decode the runtime's output tensor
@@ -316,8 +315,7 @@ model (~500 ms on a strip) plus ~40 ms of serial geometry (serial table above), 
 neither shrinks without changing what is read.
 
 Recognition: **101 crops over the 20 images** (1–12 per image; `07.png` has 12,
-`09.png` and `17.png` have 1), **one session `Run` each**. The direction classifier
-runs once per crop (101 times) and proposed a rotation **once** in the whole corpus.
+`09.png` and `17.png` have 1), **one session `Run` each**.
 
 One crop per run is worth a lot and was counter-intuitive, so here is the evidence.
 Timed in isolation against `PP-OCRv6_rec_small.onnx` on a 48x1680 canvas, 6 threads,
@@ -365,7 +363,7 @@ corpus CER goes 1.38% → **1.34%**, i.e. back to the level the detector canvas 
 had cost (F1), with the 3.0 Mpx cap still in place.
 
 Everything else tried on the recogniser was neutral or worse, and the knobs are
-worth knowing before re-testing them: per-session thread counts (det/rec/cls sized
+worth knowing before re-testing them: per-session thread counts (det/rec sized
 independently) gained nothing over one shared size; running two rec batches
 concurrently to overlap their `Run`s gained ~3% (inside noise) for extra threads;
 batching at 12 was slower; and the vendored runtime has **no accelerated execution
@@ -450,7 +448,7 @@ python3 benchmarks/run.py          # 5 trials: median, worst image, heavy, paire
 it takes about 40 s and needs no statistics. `run.py` is what tells you whether
 the change actually helped. To find out *which stage* to aim at, run a daemon with
 `OCR_DEBUG=1`: it prints one line per request with the ms spent in decode,
-detector, crops+classifier and recogniser (`time det … rec …`), plus the detector
+detector, crops and recogniser (`time det … rec …`), plus the detector
 canvas size in Mpx — that is where the E table comes from. `OCR_THREADS` overrides
 the intra-op pool size if you need to re-run the thread sweep on another host;
 `OCR_MEM_ARENA=1` leaves ONNX Runtime's CPU arena enabled, which is how D2's trade

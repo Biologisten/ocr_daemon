@@ -159,7 +159,6 @@ class Engine {
   explicit Engine(const std::string &models)
       : det_(models + "/PP-OCRv6_det_small.onnx", session_threads()),
         rec_(models + "/PP-OCRv6_rec_small.onnx", session_threads()),
-        cls_(models + "/ch_ppocr_mobile_v2.0_cls_mobile.onnx", session_threads()),
         characters_(rec_.characters()) {}
 
   std::string run(const unsigned char *data, std::size_t size) {
@@ -182,25 +181,14 @@ class Engine {
       }
     }
     std::vector<cv::Mat> crops;
-    std::vector<std::size_t> proposed;
     for (const auto &box : boxes) {
       cv::Mat line = crop(image, box);
       if (line.empty()) continue;
-      if (proposes_rotation(line)) proposed.push_back(crops.size());
       crops.push_back(std::move(line));
     }
     const auto cropped_at = clock::now();
     auto decoded = recognize(crops);
     const auto recognized_at = clock::now();
-    // The 180-degree classifier is confident far more often than it is right on
-    // very wide crops, so its verdict is a proposal: recognise the rotated crop
-    // and keep whichever reading the recogniser scores higher.
-    for (std::size_t index : proposed) {
-      cv::Mat turned;
-      cv::rotate(crops[index], turned, cv::ROTATE_180);
-      auto alternative = recognize({turned});
-      if (alternative[0].second > decoded[index].second) decoded[index] = alternative[0];
-    }
     std::vector<std::string> lines;
     for (const auto &line : decoded) {
       if (line.first.find_first_not_of(" \t\r\n") != std::string::npos && line.second >= .5f) lines.push_back(line.first);
@@ -211,7 +199,7 @@ class Engine {
         return std::chrono::duration<double, std::milli>(to - from).count();
       };
       std::cerr << "time decode " << ms(started, decoded_at) << " det " << ms(decoded_at, detected_at)
-                << " crops+cls " << ms(detected_at, cropped_at) << " rec " << ms(cropped_at, recognized_at)
+                << " crops " << ms(detected_at, cropped_at) << " rec " << ms(cropped_at, recognized_at)
                 << " lines " << lines.size() << '\n';
     }
     std::ostringstream output;
@@ -286,19 +274,6 @@ class Engine {
     return found;
   }
 
-  // True when the direction classifier is at least 90% sure this crop is upside
-  // down. That is a proposal only; the recogniser arbitrates it.
-  bool proposes_rotation(const cv::Mat &image) {
-    int width = std::min(192, static_cast<int>(std::ceil(48.0 * image.cols / image.rows)));
-    fill_nchw(cls_input_, cls_scaled_, image, 48, 192, width);
-    auto output = cls_.run(cls_input_, {1, 3, 48, 192});
-    const float *scores = output.GetTensorData<float>();
-    const std::size_t count = output.GetTensorTypeAndShapeInfo().GetElementCount();
-    bool rotate = count == 2 && scores[1] > .9f && scores[1] > scores[0];
-    if (std::getenv("OCR_DEBUG") && count == 2) std::cerr << "cls " << scores[0] << ' ' << scores[1] << " rotate " << rotate << '\n';
-    return rotate;
-  }
-
   // One Run per crop. Batching crops onto a canvas padded to the widest aspect in
   // the group made the recogniser 1.7x slower per crop -- the batched activations
   // no longer fit in cache -- and the padding could invent a whole phantom line,
@@ -329,10 +304,10 @@ class Engine {
   // Kept between requests: the detector canvas alone is 35 MB of floats, and
   // allocating it fresh cost 28.4 ms per request against 7.4 ms reused, almost all
   // of it page faults (ASSUMPTIONS.md E).
-  Session det_, rec_, cls_;
+  Session det_, rec_;
   std::vector<std::string> characters_;
-  std::vector<float> det_input_, rec_input_, cls_input_;
-  std::vector<unsigned char> det_scaled_, rec_scaled_, cls_scaled_;
+  std::vector<float> det_input_, rec_input_;
+  std::vector<unsigned char> det_scaled_, rec_scaled_;
 };
 
 char *copy_string(const std::string &value) {
