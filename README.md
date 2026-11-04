@@ -45,6 +45,7 @@ Runtime C API is backwards compatible.
 
 ```sh
 make -C native                 # c-ocr-daemon, cpp-ocr-daemon
+make -C native compile_commands.json   # what clangd reads
 OCR_MODEL_DIR=models ./native/smoke && echo ok
 OCR_DEBUG=1 OCR_MODEL_DIR=models ./native/cpp-ocr-daemon   # per-request stage timings on stderr
 ```

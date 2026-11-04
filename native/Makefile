@@ -79,5 +79,24 @@ ifeq ($(ORT_VENDORED),yes)
 endif
 	install -m644 ../models/*.onnx $(PREFIX)/models/
 
+# clangd's database; regenerate after changing a flag or adding a source file.
+# It holds absolute paths, so it is generated here rather than committed.
+compile_commands.json: Makefile
+	@printf '[\n' > $@
+	@sep=0; for spec in \
+	  '$(CC)|$(CFLAGS)|ocr_geometry.c' \
+	  '$(CXX)|$(CXXFLAGS)|ocr_core.cpp' \
+	  '$(CC)|$(CFLAGS)|c_daemon.c' \
+	  '$(CC)|$(CFLAGS)|ocr_core_c.c' \
+	  '$(CXX)|$(CXXFLAGS)|cpp_daemon.cpp' \
+	  '$(CXX)|$(CXXFLAGS)|smoke.cpp'; do \
+	  c=$${spec%%|*}; rest=$${spec#*|}; f=$${rest%%|*}; s=$${rest#*|}; \
+	  [ $$sep -eq 1 ] && printf ',\n' >> $@; \
+	  printf '  {"directory": "%s", "file": "%s", "command": "%s %s -c %s"}' \
+	    "$(CURDIR)" "$$s" "$$c" "$$f" "$$s" >> $@; \
+	  sep=1; \
+	done; printf '\n]\n' >> $@
+	@echo "wrote $@"
+
 clean:
-	rm -f *.o *.a c-ocr-daemon cpp-ocr-daemon smoke
+	rm -f *.o *.a c-ocr-daemon cpp-ocr-daemon smoke compile_commands.json
